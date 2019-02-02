@@ -1,4 +1,6 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import { type } from "os";
+import { ConductorEntity } from "src/conductor/conductor.entity";
 
 @Entity('auto')
 export class AutoEntity {
@@ -7,39 +9,51 @@ export class AutoEntity {
 
     @Index()
     @Column({
-        name: 'chasis'
+        name: 'chasis',
+        type: 'int'
     })
-    chasis: string;
+    chasis: number;
 
     @Index()
     @Column({
-        name: 'nombre-marca'
+        name: 'nombre-marca' ,
+        type: 'varchar'
     })
     nombreMarca: string;
 
     @Index()
     @Column({
-        name: 'color-uno'
+        name: 'color-uno',
+        type: 'varchar'
     })
     colorUno: string;
 
     @Index()
     @Column({
-        name: 'color-dos'
+        name: 'color-dos',
+        type: 'varchar'
     })
     colorDos: string;
 
     @Index()
     @Column({
-        name: 'nombre-modelo'
+        name: 'nombre-modelo',
+        type: 'varchar'
     })
     nombreModelo: string;
 
     @Index()
     @Column({
-        name: 'anio'
+        name: 'anio',
+        type: 'int'
     })
-    anio: string;
+    anio: number;
+
+    @OneToMany(
+        type => ConductorEntity,
+        conductor => conductor.auto
+    )
+    conductores: ConductorEntity[]
 
 
 

@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm'
+import { AutoEntity } from './auto/auto-entity';
+import { ConductorEntity } from './conductor/conductor.entity';
+import { AutoModule } from './auto/auto.module';
 
 @Module({
     imports: [
@@ -15,9 +18,12 @@ import {TypeOrmModule} from '@nestjs/typeorm'
             synchronize: true,
             dropSchema: true,
             entities:[
-                //AutoEntity
+                AutoEntity,
+                ConductorEntity
             ]
-        })
+        }),
+        AutoModule
+
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -1,4 +1,5 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, Index, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import { AutoEntity } from "src/auto/auto-entity";
 
 
 @Entity('conductor')
@@ -25,8 +26,14 @@ export class ConductorEntity {
         name: 'fecha-de-nacimiento',
         type: "date"
     })
-    fechaDeNacimiento: Date
+    fechaDeNacimiento: Date;
 
+
+    @ManyToOne(
+        type => AutoEntity,
+        auto => auto.conductores
+    )
+    auto: AutoEntity;
 
 
 
