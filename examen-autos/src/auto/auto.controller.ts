@@ -7,12 +7,15 @@ import { AutoEntity } from "./auto-entity";
 import { FindManyOptions, Like } from "typeorm";
 import { CreateAutoDto } from "./dto/create-auto.dto";
 import { ValidationError, validate } from "class-validator";
+import { ConductorEntity } from "src/conductor/conductor.entity";
+import { ConductorService } from "src/conductor/conductor.service";
 
 
 @Controller('auto')
 export class AutoController {
 
-    constructor(private readonly _autoService: AutoService){}
+    constructor(private readonly _autoService: AutoService,
+                private readonly _conductorService: ConductorService){}
 
     @Get('inicio')
     async inicio(
@@ -72,12 +75,18 @@ export class AutoController {
     }
 
     @Get('crear-auto')
-    crearAutoRuta(
+    async crearAutoRuta(
         @Res() response
     ){
+        let conductores: ConductorEntity[];
+        conductores = await this._conductorService.buscar();
         response.render(
             'crear-auto',
-            {titulo: 'Crear auto'}
+            {
+                titulo: 'Crear auto',
+                arregloConductores: conductores
+        
+            }
         )
     }
 
@@ -101,7 +110,7 @@ export class AutoController {
             throw new BadRequestException({mensaje: 'Error de validación en crear'})
         }else{
             await this._autoService.crear(auto);
-            const parametrosConsulta = `?accion=crear&nombreMarca=$${
+            const parametrosConsulta = `?accion=crear&nombreMarca=${
                 auto.nombreMarca
             }`;
             
@@ -148,7 +157,7 @@ export class AutoController {
             throw new BadRequestException({mensaje: 'Error de validación en crear'})
         }else{
             await this._autoService.actualizar(auto);
-            const parametrosConsulta = `?accion=actualizar&nombreMarca=$${
+            const parametrosConsulta = `?accion=actualizar&nombreMarca=${
                 auto.nombreMarca
             }`;
             
@@ -165,7 +174,7 @@ export class AutoController {
         await this._autoService
         .eliminar(+idAuto);
 
-        const parametrosConsulta = `?accion=borrar&nombreMarca=$${
+        const parametrosConsulta = `?accion=borrar&nombreMarca=${
             auto.nombreMarca
         }`;
         response.redirect('/auto/inicio'+ parametrosConsulta)

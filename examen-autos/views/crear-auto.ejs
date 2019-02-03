@@ -1,0 +1,91 @@
+<%- include('header.ejs',{titulo:'Gestion de Autos'});%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <% const estaCreando = typeof auto === "undefined"%>
+
+
+            <h1> <%= estaCreando ? 'Crear':'Actualizar' %> auto</h1>
+
+            <p><%= estaCreando ? 'Cree':'Actualice' %> un auto</p>
+
+            <!-- emmet -->
+            <form action="/auto/<%= estaCreando ? 'crear' : 'actualizar' %>-auto/<%= estaCreando ? '' : auto.idAuto %>"
+                  method="POST">
+
+                <div>
+                    <label for="nombreMarca">Nombre de la marca</label>
+                    <input id="nombreMarca"
+                           name="nombreMarca"
+                           type="text"
+                           value="<%= estaCreando ? '' : auto.nombreMarca %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="nombreModelo">Nombre del modelo</label>
+                    <input id="nombreModelo"
+                           name="nombreModelo"
+                           type="text"
+                           value="<%= estaCreando ? '' : auto.nombreModelo %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="colorUno">Color uno del auto</label>
+                    <input id="colorUno"
+                           name="colorUno"
+                           type="text"
+                           value="<%= estaCreando ? '' : auto.colorUno %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="colorDos">Color dos del auto</label>
+                    <input id="colorDos"
+                           name="colorDos"
+                           type="text"
+                           value="<%= estaCreando ? '' : auto.colorDos %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="anio">Año del auto</label>
+                    <input id="anio"
+                           name="anio"
+                           type="number"
+                           value="<%= estaCreando ? '' : auto.anio %>"
+                    >
+                </div>
+                <br>
+                <form action="">
+                    <div class="form-group">
+                        <label for="conductores">seleccionar un conductor</label>
+                        <select  class="form-control" id="conductores">
+
+                            <% arregloConductores.forEach( (conductor)=> { %>
+                                <option
+                                        value="<%=conductor.id %>"> <%=conductor.nombre %> </option>
+                            <% }) %>
+
+                        </select>
+                    </div>
+                </form>
+                <br>
+<!---->
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
+
+            </form>
+
+            <a href="/auto/inicio">
+                <button>Regresar</button>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+<%- include('librerias.ejs')%>
+<%- include('footer.ejs')%>

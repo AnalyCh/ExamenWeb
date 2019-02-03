@@ -1,5 +1,5 @@
 
-<%- include('header',{titulo:'Gestion de Autos'}); %>
+<%- include('header',{titulo:'Gestion de Eventos'}); %>
 
 <div class="container">
 
@@ -20,14 +20,14 @@
     </div>
     <% } %>
 
-    <h1>Gestion de Autos</h1>
-    <p>Busque, cree, actualice y elimine autos
-        Puede buscar autos porla marca,  el nombre del modelo o el año</p>
+    <h1>Gestion de Eventos</h1>
+    <p>Busque, cree, actualice y elimine Eventos
+        Puede buscar Eventos por  el nombre, la fecha o ...</p>
 
     <% if(booleano){%>
-        <p> Usted creo una Auto</p>
+        <p> Usted creo un evento</p>
     <% }%>
-    <form method="get" action="/auto/inicio" >
+    <form method="get" action="/evento/inicio" >
         <div class="row">
             <div class="col-sm-9">
                 <label for="busqueda">Busqueda</label>
@@ -45,16 +45,16 @@
     <div class="row">
         <div class="col-sm-9"></div>
         <div class="col-sm-3">
-            <a href="/auto/crear-auto" class="quitar-link">
+            <a href="/evento/crear-evento" class="quitar-link">
                 <button class="btn btn-outline-success btn-block">
-                    Crear auto
+                    Crear evento
                 </button>
             </a>
         </div>
     </div>
 
-    <h2> lista de Autos</h2>
-    <p>Listado de las autos, actualice o elimine autos</p>
+    <h2> lista de Eventos</h2>
+    <p>Listado de las Eventos, actualice o elimine Eventos</p>
 
     <br>
 
@@ -64,33 +64,33 @@
             <thead>
             <tr>
                 <!-- th -> table header -->
-                <th width= "auto">Marca</th>
-                <th width="auto">ColorUno</th>
-                <th width="auto">ColorDos</th>
-                <th width="auto">Modelo</th>
-                <th width="auto">anio</th>
+                <th width= "auto">Nombre</th>
+                <th width="auto">Fecha</th>
+                <th width="auto">Latitud</th>
+                <th width="auto">Longitud</th>
                 <th width="auto">Acciones</th>
+                
             </tr>
             </thead>
             <!-- tr -> table row -->
             <tbody>
-            <% arreglo.forEach( (auto)=> { %>
+            <% arreglo.forEach( (evento)=> { %>
                 <tr>
                     <!-- td -> table detail -->
-                    <td><%= auto.nombreMarca %></td>
-                    <td><%= auto.colorUno %></td>
-                    <td><%= auto.colorDos %></td>
-                    <td><%= auto.nombreModelo %></td>
-                    <td><%= auto.anio %></td>
+                    <td><%= evento.nombre %></td>
+                    <td><%= evento.fecha %></td>
+                    <td><%= evento.latitud %></td>
+                    <td><%= evento.longitud %></td>
+                    
                     <td>
-                        <form action="/auto/eliminar/<%= auto.idAuto %>" method="POST">
+                        <form action="/evento/eliminar/<%= evento.idevento %>" method="POST">
                             <button class="btn btn-outline-danger btn-block"
                                     type="submit">
                                 Eliminar
                             </button>
                         </form>
                         <a class="quitar-link"
-                           href="/auto/actualizar-auto/<%= auto.idAuto %>">
+                           href="/evento/actualizar-evento/<%= evento.idEvento %>">
                             <button class="btn btn-outline-info btn-block">
                                 Actualizar
                             </button>

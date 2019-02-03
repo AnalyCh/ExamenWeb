@@ -1,6 +1,7 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany, ManyToOne} from "typeorm";
 import { type } from "os";
 import { ConductorEntity } from "src/conductor/conductor.entity";
+import { EventoPorAutoEntity } from "src/evento-por-auto/evento-por-auto.entity";
 
 @Entity('auto')
 export class AutoEntity {
@@ -49,11 +50,18 @@ export class AutoEntity {
     })
     anio: number;
 
-    @OneToMany(
+
+    @ManyToOne(
         type => ConductorEntity,
-        conductor => conductor.auto
+        conductor => conductor.autos
     )
-    conductores: ConductorEntity[]
+    conductor: ConductorEntity;
+
+    @OneToMany(
+        type => EventoPorAutoEntity,
+        eventoPorAuto => eventoPorAuto.auto
+    )
+    eventoPorAutos: EventoPorAutoEntity[]
 
 
 

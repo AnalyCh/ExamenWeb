@@ -3,6 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AutoEntity } from "./auto-entity";
 import { AutoController } from "./auto.controller";
 import { AutoService } from "./auto.service";
+import { ConductorService } from "src/conductor/conductor.service";
+import { ConductorModule } from "src/conductor/conductor.module";
 
 @Module(
     {
@@ -11,13 +13,15 @@ import { AutoService } from "./auto.service";
                 [
                     AutoEntity
                 ]
-            )
+            ),
+            ConductorModule
         ],
         controllers:[
             AutoController
         ],
         providers:[
-            AutoService
+            AutoService,
+            ConductorService
         ],
         exports:[
             AutoService

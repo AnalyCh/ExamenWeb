@@ -1,5 +1,6 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {Column, Entity, Index, PrimaryGeneratedColumn, ManyToOne, OneToMany} from "typeorm";
 import { AutoEntity } from "src/auto/auto-entity";
+import { type } from "os";
 
 
 @Entity('conductor')
@@ -28,12 +29,13 @@ export class ConductorEntity {
     })
     fechaDeNacimiento: Date;
 
-
-    @ManyToOne(
+    @OneToMany(
         type => AutoEntity,
-        auto => auto.conductores
+        auto => auto.conductor
     )
-    auto: AutoEntity;
+    autos: AutoEntity[];
+
+    
 
 
 
