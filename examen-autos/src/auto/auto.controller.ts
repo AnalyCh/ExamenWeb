@@ -96,18 +96,25 @@ export class AutoController {
         @Body() auto: Auto
     ){
         const objetoValidacionAuto = new CreateAutoDto();
-        objetoValidacionAuto.chasis = auto.chasis;
+        
+        const num = Number(auto.chasis)
+
+        objetoValidacionAuto.chasis = num;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
         objetoValidacionAuto.colorUno = auto.colorUno;
         objetoValidacionAuto.colorDos = auto.colorDos;
         objetoValidacionAuto.nombreModelo = auto.nombreModelo;
-        objetoValidacionAuto.anio = auto.anio;
+        const anioNum = Number(auto.anio);
+        objetoValidacionAuto.anio = anioNum;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
+        console.log("numero de errores: "+errores.length)
+        const mensajeError = errores[0]
+        
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
         }else{
             await this._autoService.crear(auto);
             const parametrosConsulta = `?accion=crear&nombreMarca=${
@@ -126,10 +133,15 @@ export class AutoController {
         const autoEncontrado = await this._autoService
         .buscarPorId(+idAuto);
 
+        console.log(autoEncontrado.idAuto + " "+ autoEncontrado.chasis)
+
+        let conductores: ConductorEntity[];
+        conductores = await this._conductorService.buscar();
         response.render(
             'crear-auto',
             {
-                auto: autoEncontrado
+                auto: autoEncontrado,
+                arregloConductores: conductores
             }
         )
     }
@@ -143,18 +155,27 @@ export class AutoController {
         auto.idAuto = +idAuto;
         //
         const objetoValidacionAuto = new CreateAutoDto();
+
+        const num = Number(auto.chasis)
+
+        objetoValidacionAuto.chasis = num;
         objetoValidacionAuto.chasis = auto.chasis;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
         objetoValidacionAuto.colorUno = auto.colorUno;
         objetoValidacionAuto.colorDos = auto.colorDos;
         objetoValidacionAuto.nombreModelo = auto.nombreModelo;
-        objetoValidacionAuto.anio = auto.anio;
+
+        const anioNum = Number(auto.anio);
+        objetoValidacionAuto.anio = anioNum;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
+        const mensajeError = errores[0]
+        console.log("error: "+mensajeError)
+        console.log("error: "+errores.length)
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: mensajeError})
         }else{
             await this._autoService.actualizar(auto);
             const parametrosConsulta = `?accion=actualizar&nombreMarca=${
@@ -196,3 +217,5 @@ export interface Auto{
     anio?: number,
     idConductor?: number
 }
+
+// value="<%=conductor.id %>"  // "<%= estaCreando ? "<%=conductor.id %>": auto.idConductor %>" 

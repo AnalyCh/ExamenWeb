@@ -15,6 +15,15 @@
                   method="POST">
 
                 <div>
+                    <label for="chasis">Chasis</label>
+                    <input id="chasis"
+                               name="chasis"
+                               type="number"
+                               value="<%= estaCreando ? '' : auto.chasis %>"
+                    >
+                </div>
+
+                <div>
                     <label for="nombreMarca">Nombre de la marca</label>
                     <input id="nombreMarca"
                            name="nombreMarca"
@@ -55,10 +64,14 @@
                     <input id="anio"
                            name="anio"
                            type="number"
+                           min="1950"
+                           max="2019"
+                           step="1"
+
                            value="<%= estaCreando ? '' : auto.anio %>"
                     >
                 </div>
-                <br>
+
                 <form action="">
                     <div class="form-group">
                         <label for="conductores">seleccionar un conductor</label>
@@ -66,17 +79,18 @@
 
                             <% arregloConductores.forEach( (conductor)=> { %>
                                 <option
-                                        value="<%=conductor.id %>"> <%=conductor.nombre %> </option>
+                                    value="<%=conductor.id %>"
+                                > 
+                                    <%=conductor.nombre  %> 
+                                    <%=conductor.apellido  %>
+                                </option>
                             <% }) %>
 
                         </select>
                     </div>
+                    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
                 </form>
-                <br>
-<!---->
-                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
-
-            </form>
+<!--  -->
 
             <a href="/auto/inicio">
                 <button>Regresar</button>
@@ -88,4 +102,13 @@
 
 
 <%- include('librerias.ejs')%>
+<script>
+
+    $(function() {
+    $( "#datepicker" ).datepicker({dateFormat: 'yy'});
+    });​
+
+</script>
+
+
 <%- include('footer.ejs')%>

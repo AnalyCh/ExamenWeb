@@ -78,18 +78,36 @@ export class ConductorController{
         @Res() response,
         @Body() conductor: Conductor
     ){
+
+        
         const validarConductor = new CreateConductorDto();
+
+        console.log(typeof(conductor.nombre)  +
+            " \n"+ typeof(conductor.apellido)+ 
+            "\n" + typeof(conductor.fechaDeNacimiento) + 
+            " "+ typeof(conductor.licenciaValida) );
+
 
         validarConductor.nombre = conductor.nombre;
         validarConductor.apellido = conductor.apellido;
-        validarConductor.fechaDeNacimiento = conductor.fechaDeNacimiento;
-        validarConductor.licenciaValida = conductor.licenciaValida;
+        const fec = new Date(conductor.fechaDeNacimiento).toISOString()
+        //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
+        validarConductor.fechaDeNacimiento = fec;
+        const bool = Boolean(conductor.licenciaValida)
+        validarConductor.licenciaValida = bool;
+
+        console.log(conductor.nombre +
+             " \n"+ conductor.apellido+ 
+             "\n" + conductor.fechaDeNacimiento+ 
+             " "+ conductor.licenciaValida);
 
         const errores: ValidationError[] = await validate(validarConductor);
+        const mensajeError = errores[0]
         const  hayErrores = errores.length >0;
+        console.log("numeroerrores: "+errores.length)
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
         }else{
             await this._conductorService.crear(conductor);
             const parametrosConsulta = `?accion=crear&nombre=${
@@ -113,7 +131,7 @@ export class ConductorController{
         response.render(
             'crear-conductor',
             {
-                auto: conductorEncontrado
+                conductor: conductorEncontrado
             }
         )
     }
@@ -129,14 +147,20 @@ export class ConductorController{
 
         validarConductor.nombre = conductor.nombre;
         validarConductor.apellido = conductor.apellido;
-        validarConductor.fechaDeNacimiento = conductor.fechaDeNacimiento;
-        validarConductor.licenciaValida = conductor.licenciaValida;
+        const fec = new Date(conductor.fechaDeNacimiento).toISOString()
+        //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
+        validarConductor.fechaDeNacimiento = fec;
+
+        const bool = Boolean(conductor.licenciaValida)
+        validarConductor.licenciaValida = bool;
 
         const errores: ValidationError[] = await validate(validarConductor);
+        const mensajeError = errores.toString
         const  hayErrores = errores.length >0;
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            console.log(errores)
+            throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: "mensaje"})
         }else{
             conductor.idConductor = +idConductor;
             await this._conductorService.actualizar(conductor);
@@ -171,6 +195,6 @@ export interface Conductor{
     idConductor?: number,
     nombre?: string,
     apellido?: string,
-    fechaDeNacimiento?: Date,
+    fechaDeNacimiento?:  Date,
     licenciaValida?: boolean,
 }

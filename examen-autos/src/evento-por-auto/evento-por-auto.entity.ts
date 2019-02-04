@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { AutoEntity } from "src/auto/auto-entity";
 import { EventoEntity } from "src/evento/evento.entity";
 
@@ -8,6 +8,7 @@ export class EventoPorAutoEntity{
     
     @PrimaryGeneratedColumn()
     idEventoPorAuto: string;
+
 
     @ManyToOne(
         type => AutoEntity,

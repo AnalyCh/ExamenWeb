@@ -29,6 +29,14 @@ export class ConductorEntity {
     })
     fechaDeNacimiento: Date;
 
+    @Index()
+    @Column({
+        name: 'licencia-valida',
+        type: Boolean
+    })
+    licenciaValida: boolean ;
+
+
     @OneToMany(
         type => AutoEntity,
         auto => auto.conductor

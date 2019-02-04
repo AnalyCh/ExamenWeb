@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, IsDate, IsBoolean} from "class-validator"
+import {IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber, IsDateString, IsBooleanString} from "class-validator"
 
 export class CreateConductorDto{
     @IsNotEmpty()
@@ -10,8 +10,9 @@ export class CreateConductorDto{
     apellido: string;
 
     @IsNotEmpty()
-    @IsDate()
-    fechaDeNacimiento: Date;
+    @IsDateString()
+    //@IsDate()
+    fechaDeNacimiento: string;
 
     @IsNotEmpty()
     @IsBoolean()

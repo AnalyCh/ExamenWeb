@@ -76,12 +76,10 @@
             <tbody>
             <% arreglo.forEach( (conductor)=> { %>
                 <tr>
-                    <!-- td -> table detail -->
                     <td><%= conductor.nombre %></td>
                     <td><%= conductor.apellido %></td>
                     <td><%= conductor.fechaDeNacimiento %></td>
-                    <td><%= conductor.licenciaValida %></td>
-                    
+                    <td><%= conductor.licenciaValida %></td>                   
                     <td>
                         <form action="/conductor/eliminar/<%= conductor.idConductor %>" method="POST">
                             <button class="btn btn-outline-danger btn-block"

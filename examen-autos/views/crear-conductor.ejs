@@ -1,0 +1,90 @@
+<%- include('header.ejs',{titulo:'Gestion de Conductores'});%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <% const estaCreando = typeof conductor === "undefined"%>
+
+
+            <h1> <%= estaCreando ? 'Crear':'Actualizar' %> conductor</h1>
+
+            <p><%= estaCreando ? 'Cree':'Actualice' %> un conductor</p>
+
+            <!-- emmet -->
+            <form action="/conductor/<%= estaCreando ? 'crear' : 'actualizar' %>-conductor/<%= estaCreando ? '' : conductor.idConductor %>"
+                  method="POST">
+
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre"
+                           name="nombre"
+                           type="text"
+                           value="<%= estaCreando ? '' : conductor.nombre %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="apellido">Apellido</label>
+                    <input id="apellido"
+                           name="apellido"
+                           type="text"
+                           value="<%= estaCreando ? '' : conductor.apellido %>"
+                    >
+                </div>
+
+                <div>
+                    <label for="fechaDeNacimiento">Fecha de Nacimiento</label>
+                    <input id="fechaDeNacimiento"
+                           name="fechaDeNacimiento"
+                           type="date"
+                           min="1940-01-01"
+                           
+                           value="<%= estaCreando ? '' : conductor.fechaDeNacimiento %>"
+                    >
+
+                </div>
+
+                <div class="form-group">
+                    <label for="licenciaValida">Licencia valida?</label>
+                    <select  class="form-control" id="licenciaValida" name="licenciaValida">
+                        <option value="0">No</option>
+                        <option value="1">Si</option>
+                    </select>
+                
+                </div>
+<!---->
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> conductor</button>
+
+            </form>
+
+            <a href="/conductor/inicio">
+                <button>Regresar</button>
+            </a>
+        </div>
+        
+    </div>
+</div>
+<script>
+        function imprimirEnConsola(evento) {
+            evento.preventDefault();
+            console.log('ASDASDAS');
+        }
+    </script>
+
+
+<%- include('librerias')%>
+<script>
+const etiquetaSelectfechaDeNacimiento = document.getElementById('fechaDeNacimiento');
+etiquetaSelectfechaDeNacimiento.max=new  Date().toISOString().split("T")[0];
+const etiquetaSelectLicencia = document.getElementById('licenciaValida');
+let valorActualLicencia = etiquetaSelectLicencia.value;
+
+etiquetaSelectLicencia.onchange = (evento) =>{
+        valorActualLicencia = etiquetaSelectLicencia.value;
+        console.log("Licencia ejs: "  +valorActualLicencia + "tipo: "+ typeof(valorActualLicencia));
+        
+    };
+
+</script>
+
+<%- include('footer'); %>
