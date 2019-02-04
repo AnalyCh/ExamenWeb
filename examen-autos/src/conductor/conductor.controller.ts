@@ -90,11 +90,11 @@ export class ConductorController{
 
         validarConductor.nombre = conductor.nombre;
         validarConductor.apellido = conductor.apellido;
-        const fec = new Date(conductor.fechaDeNacimiento).toISOString()
+        const fec = new Date(conductor.fechaDeNacimiento).toISOString();
         //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
         validarConductor.fechaDeNacimiento = fec;
-        const bool = Boolean(conductor.licenciaValida)
-        validarConductor.licenciaValida = bool;
+        conductor.licenciaValida = Boolean(conductor.licenciaValida);
+        validarConductor.licenciaValida = conductor.licenciaValida;
 
         console.log(conductor.nombre +
              " \n"+ conductor.apellido+ 
@@ -102,9 +102,9 @@ export class ConductorController{
              " "+ conductor.licenciaValida);
 
         const errores: ValidationError[] = await validate(validarConductor);
-        const mensajeError = errores[0]
+        const mensajeError = errores[0];
         const  hayErrores = errores.length >0;
-        console.log("numeroerrores: "+errores.length)
+        console.log("numeroerrores: "+errores.length);
 
         if(hayErrores){
             throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
@@ -147,19 +147,22 @@ export class ConductorController{
 
         validarConductor.nombre = conductor.nombre;
         validarConductor.apellido = conductor.apellido;
-        const fec = new Date(conductor.fechaDeNacimiento).toISOString()
+        const fec = new Date(conductor.fechaDeNacimiento).toISOString();
         //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
         validarConductor.fechaDeNacimiento = fec;
+        conductor.licenciaValida = Boolean(conductor.licenciaValida);
+        validarConductor.licenciaValida = conductor.licenciaValida;
 
-        const bool = Boolean(conductor.licenciaValida)
-        validarConductor.licenciaValida = bool;
-
+        console.log(conductor.nombre +
+            " \n"+ conductor.apellido+
+            "\n" + conductor.fechaDeNacimiento+
+            " "+ conductor.licenciaValida);
         const errores: ValidationError[] = await validate(validarConductor);
-        const mensajeError = errores.toString
+        const mensajeError = errores.toString;
         const  hayErrores = errores.length >0;
-
+        console.log("numero errores" + errores.length);
         if(hayErrores){
-            console.log(errores)
+            console.log(errores);
             throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: "mensaje"})
         }else{
             conductor.idConductor = +idConductor;
