@@ -20,7 +20,7 @@ import { EventoPorAutoEntity } from './evento-por-auto/evento-por-auto.entity';
             username: 'root',
             password: 'root',
             synchronize: true,
-            dropSchema: false,
+            dropSchema: true,
             entities:[
                 AutoEntity,
                 ConductorEntity,

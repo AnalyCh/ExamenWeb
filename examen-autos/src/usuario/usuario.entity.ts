@@ -1,6 +1,7 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 import { RolEntity } from "src/rol/rol.entity";
 import { RolesporusuarioEntity } from "src/rolesporusuario/rolesporusuario.entity";
+import { AutoEntity } from "src/auto/auto-entity";
 
 
 @Entity('usuario')
@@ -28,6 +29,12 @@ export class UsuarioEntity {
         pagina => pagina.rol
     )
     paginas: RolesporusuarioEntity[];
+
+    @OneToMany(
+        type => AutoEntity,  
+        auto => auto.usuario
+    )
+    autos: AutoEntity[];
 
 
 }

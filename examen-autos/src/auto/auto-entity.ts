@@ -2,6 +2,7 @@ import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany, ManyToOne} fro
 import { type } from "os";
 import { ConductorEntity } from "src/conductor/conductor.entity";
 import { EventoPorAutoEntity } from "src/evento-por-auto/evento-por-auto.entity";
+import { UsuarioEntity } from "src/usuario/usuario.entity";
 
 @Entity('auto')
 export class AutoEntity {
@@ -50,15 +51,6 @@ export class AutoEntity {
     })
     anio: number;
 
-/*
-    @Index()
-    @Column({
-        name: 'conductorIdConductor',
-        type: 'int'
-    })
-    idConductor: number;
-*/
-
     @ManyToOne(
         type => ConductorEntity,
         conductor => conductor.autos
@@ -69,7 +61,13 @@ export class AutoEntity {
         type => EventoPorAutoEntity,
         eventoPorAuto => eventoPorAuto.auto
     )
-    eventoPorAutos: EventoPorAutoEntity[]
+    eventoPorAutos: EventoPorAutoEntity[];
+
+    @ManyToOne(
+        type => UsuarioEntity,
+        usuario => usuario.autos
+    )
+    usuario: UsuarioEntity;
 
 
 
