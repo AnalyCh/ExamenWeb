@@ -1,4 +1,4 @@
-import {Get, Controller, Res} from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -24,6 +24,27 @@ export class AppController {
     )
   }
 
+  @Get('inicio')
+  LlamarVistaInicio( 
+    @Res() res
+    )
+  {
+    res.render('inicio');
+  }
+  @Get('login')
+  LlamarVistaLogin( 
+    @Res() res
+    )
+  {
+    res.render('login');
+  }
+  @Get('register')
+  LlamarVistaRegistro( 
+    @Res() res
+    )
+  {
+    res.render('register');
+  }
 
 
 }
