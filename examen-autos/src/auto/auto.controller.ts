@@ -76,15 +76,26 @@ export class AutoController {
 
     @Get('crear-auto')
     async crearAutoRuta(
-        @Res() response
+        @Res() response,
+        @Query() error
     ){
+        let mensaje = undefined;
+        let clase = undefined;
+        if(error ){
+            mensaje = `Error en el compo/s ${error}`;
+            clase = 'alert alert-danger';
+        }
+
+
         let conductores: ConductorEntity[];
         conductores = await this._conductorService.buscar();
         response.render(
             'crear-auto',
             {
                 titulo: 'Crear auto',
-                arregloConductores: conductores
+                mensaje: mensaje,
+                arregloConductores: conductores,
+                clase: clase
         
             }
         )
@@ -97,24 +108,39 @@ export class AutoController {
     ){
         const objetoValidacionAuto = new CreateAutoDto();
         
-        const num = Number(auto.chasis)
-
-        objetoValidacionAuto.chasis = num;
+        auto.chasis = Number(auto.chasis)
+    
+        objetoValidacionAuto.chasis = auto.chasis;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
         objetoValidacionAuto.colorUno = auto.colorUno;
         objetoValidacionAuto.colorDos = auto.colorDos;
         objetoValidacionAuto.nombreModelo = auto.nombreModelo;
-        const anioNum = Number(auto.anio);
-        objetoValidacionAuto.anio = anioNum;
+        auto.anio= Number(auto.anio);
+        objetoValidacionAuto.anio = auto.anio;
+        console.log(auto.conductor);
+        auto.conductor = Number(auto.conductor)
+        objetoValidacionAuto.conductor = auto.conductor;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
-        console.log("numero de errores: "+errores.length)
+        console.log("numero de errores en crear auto: "+errores.length)
         const mensajeError = errores[0]
+
+        console.log(auto.nombreMarca+ "\n"+
+                    auto.colorUno +"\n"+
+                    auto.conductor);
         
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
+            //throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
+
+            const parametrosConsulta = `?error=${
+                errores
+            }`;
+            
+            response.redirect('/auto/crear-auto'+parametrosConsulta)
+
+
         }else{
             await this._autoService.crear(auto);
             const parametrosConsulta = `?accion=crear&nombreMarca=${
@@ -156,17 +182,18 @@ export class AutoController {
         //
         const objetoValidacionAuto = new CreateAutoDto();
 
-        const num = Number(auto.chasis)
+        auto.chasis = Number(auto.chasis)
 
-        objetoValidacionAuto.chasis = num;
         objetoValidacionAuto.chasis = auto.chasis;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
         objetoValidacionAuto.colorUno = auto.colorUno;
         objetoValidacionAuto.colorDos = auto.colorDos;
         objetoValidacionAuto.nombreModelo = auto.nombreModelo;
 
-        const anioNum = Number(auto.anio);
-        objetoValidacionAuto.anio = anioNum;
+        auto.anio = Number(auto.anio);
+        objetoValidacionAuto.anio = auto.anio;
+        auto.conductor = Number(auto.conductor)
+        objetoValidacionAuto.conductor = auto.conductor;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
@@ -215,7 +242,7 @@ export interface Auto{
     colorDos?: string,
     nombreModelo?: string,
     anio?: number,
-    idConductor?: number
+    conductor?: number 
 }
 
-// value="<%=conductor.id %>"  // "<%= estaCreando ? "<%=conductor.id %>": auto.idConductor %>" 
+// value="<%=conductor.id %>"  // "<%= estaCreando ? "<%=conductor.id %>": auto.conductor %>" 

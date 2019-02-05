@@ -1,0 +1,184 @@
+<!-- <%- include('header.ejs',{titulo:'Gestion de eventoes'});%> -->
+<%- include('header',{titulo:'Gestion de Eventos'}); %>
+
+<div class="container">
+
+        <% const existeMensaje = typeof mensaje!== "undefined"%>
+
+        <%if(existeMensaje){ %>
+        <div class=" <%=clase%>" role="alert">
+            <span class="font-weight-bold">
+                MENSAJE
+            </span> : <%=mensaje%>
+        </div>
+        <% } %>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <% const estaCreando = typeof evento === "undefined"%>
+
+
+            <h1> <%= estaCreando ? 'Crear':'Actualizar' %> evento</h1>
+
+            <p><%= estaCreando ? 'Cree':'Actualice' %> un evento</p>
+            <!-- emmet -->
+            <form action="/evento/<%= estaCreando ? 'crear' : 'actualizar' %>-evento/<%= estaCreando ? '' : evento.idevento %>"
+                  method="POST">
+
+                  <div>
+                        <label for="nombre">Nombre del evento</label>
+                        <input id="nombre"
+                               name="nombre"
+                               type="text"
+                               value="<%= estaCreando ? '' : evento.nombre %>"
+                        >
+                    </div>
+    
+                    <div>
+                            <label for="fecha">Fecha del evento</label>
+                            <input id="fecha"
+                                   name="fecha"
+                                   type="date"                                                       
+                                   value="<%= estaCreando ? '' : evento.fecha %>"
+                            >
+    
+                    </div>
+ <!--                   <input type="text" id="coords" /> -->
+
+                    <div>
+                            <label for="latitud"> Latitud: </label>
+                            <input type="text" 
+                                    id="latitud" 
+                                    name="latitud"/>
+                        </div>
+        
+                        <div>
+                            <label for="longitud">Longitud: </label>
+                            <input type="text"
+                                    id="longitud" 
+                                    name= "longitud"/>
+                        </div>
+                
+<!---->
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> evento</button>
+
+            </form>
+
+            <a href="/evento/inicio">
+                <button>Regresar</button>
+            </a>
+        </div>
+
+        <div class="col-sm-6">
+                <div id="map"></div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<%- include('librerias.ejs');%>
+<script>
+
+
+        var marker;          //variable del marcador
+        var coords = {};    //coordenadas obtenidas con la geolocalización
+
+    
+        //Funcion principal
+        initMap = function ()
+        {
+    
+            //usamos la API para geolocalizar el usuario
+            navigator.geolocation.getCurrentPosition(
+                function (position){
+                    coords =  {
+                        lng: position.coords.longitude,
+                        lat: position.coords.latitude
+                    };
+                    setMapa(coords);  //pasamos las coordenadas al metodo para crear el mapa
+    
+    
+                },function(error){console.log(error);});
+    
+        }
+    
+    
+    
+        function setMapa (coords)
+        {
+            //Se crea una nueva instancia del objeto mapa
+            var map = new google.maps.Map(document.getElementById('map'),
+                {
+                    zoom: 13,
+                    center:new google.maps.LatLng(coords.lat,coords.lng),
+    
+                });
+    
+            //Creamos el marcador en el mapa con sus propiedades
+            //para nuestro obetivo tenemos que poner el atributo draggable en true
+            //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: new google.maps.LatLng(coords.lat,coords.lng),
+    
+            });
+            //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica
+            //cuando el usuario a soltado el marcador
+            marker.addListener('click', toggleBounce);
+    
+            marker.addListener( 'dragend', function (event)
+            {
+                //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
+                //document.getElementById("coords").value = this.getPosition().lat()+','+this.getPosition().lng();
+                document.getElementById("latitud").value = this.getPosition().lat();
+                document.getElementById("longitud").value = this.getPosition().lng();
+            });
+        }
+    
+        //callback al hacer clic en el marcador lo que hace es quitar y poner la animacion BOUNCE
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+        }
+    
+        // Carga de la libreria de google maps
+    
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+
+    <script>
+            const etiquetaSelectfecha = document.getElementById('fecha');
+            etiquetaSelectfecha.min=new  Date().toISOString().split("T")[0];
+            
+            </script>
+
+<%- include('footer'); %>
+
+<!--
+    <div>
+                    <label for="nombre">Nombre del evento</label>
+                    <input id="nombre"
+                           name="nombre"
+                           type="text"
+                           value="<%= estaCreando ? '' : evento.nombre %>"
+                    >
+                </div>
+
+                <div>
+                        <label for="fecha">Fecha del evento</label>
+                        <input id="fecha"
+                               name="fecha"
+                               type="date"                                                       
+                               value="<%= estaCreando ? '' : evento.fecha %>"
+                        >
+
+                </div>
+-->

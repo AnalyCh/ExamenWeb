@@ -7,9 +7,23 @@ export class AppController {
 
   @Get()
   root(
-  ): string {
-    return this.appService.root();
+    @Res() response
+  ){
+    //return this.appService.root();
+    response.render(
+      'pruebas'
+    )
+  };
+
+  @Get('prueba')
+  prueba(
+    @Res() response
+  ){
+    response.render(
+      'pruebas'
+    )
   }
+
 
 
 }

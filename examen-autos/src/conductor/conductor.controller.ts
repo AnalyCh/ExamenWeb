@@ -65,11 +65,22 @@ export class ConductorController{
 
     @Get('crear-conductor')
     crearConductorRuta(
-        @Res() response
+        @Res() response,
+        @Query() error
     ){
+        let mensaje= undefined;
+        let clase = undefined;
+        if(error ){
+            mensaje = `No se creo el conductor.  ${error} `;
+            clase = 'alert alert-danger';
+        }
         response.render(
             'crear-conductor',
-            {titulo: 'Crear conductor'}
+            {titulo: 'Crear conductor',
+            mensaje: mensaje,
+            clase: clase
+        
+        }
         )
     }
 
@@ -93,7 +104,7 @@ export class ConductorController{
         const fec = new Date(conductor.fechaDeNacimiento).toISOString();
         //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
         validarConductor.fechaDeNacimiento = fec;
-        conductor.licenciaValida = Boolean(conductor.licenciaValida);
+        conductor.licenciaValida = Boolean(Number(conductor.licenciaValida));
         validarConductor.licenciaValida = conductor.licenciaValida;
 
         console.log(conductor.nombre +
@@ -107,7 +118,12 @@ export class ConductorController{
         console.log("numeroerrores: "+errores.length);
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
+            //throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
+            const parametrosConsulta = `?error=${
+                errores.toString()
+            }`;
+            
+            response.redirect('/conductor/crear-conductor/:'+parametrosConsulta)
         }else{
             await this._conductorService.crear(conductor);
             const parametrosConsulta = `?accion=crear&nombre=${
@@ -123,6 +139,7 @@ export class ConductorController{
     @Get('actualizar-conductor/:idConductor')
     async actualizarConductorVista(
         @Res() response,
+        @Query() error,
         @Param('idConductor') idConductor: string
     ){
         const conductorEncontrado = await this._conductorService
@@ -150,7 +167,7 @@ export class ConductorController{
         const fec = new Date(conductor.fechaDeNacimiento).toISOString();
         //const fec: Date= Date.parse(conductor.fechaDeNacimiento.toString());
         validarConductor.fechaDeNacimiento = fec;
-        conductor.licenciaValida = Boolean(conductor.licenciaValida);
+        conductor.licenciaValida = Boolean(Number(conductor.licenciaValida));
         validarConductor.licenciaValida = conductor.licenciaValida;
 
         console.log(conductor.nombre +
@@ -163,7 +180,13 @@ export class ConductorController{
         console.log("numero errores" + errores.length);
         if(hayErrores){
             console.log(errores);
-            throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: "mensaje"})
+            //throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: "mensaje"})
+
+            const parametrosConsulta = `?error=${
+                errores
+            }`;
+            
+            response.redirect('/conductor/actualizar-conductor/:'+idConductor+parametrosConsulta)
         }else{
             conductor.idConductor = +idConductor;
             await this._conductorService.actualizar(conductor);

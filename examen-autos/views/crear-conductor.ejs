@@ -1,6 +1,18 @@
 <%- include('header.ejs',{titulo:'Gestion de Conductores'});%>
 
 <div class="container">
+
+        <% const existeMensaje = typeof mensaje!== "undefined"%>
+
+        <%if(existeMensaje){ %>
+        <div class=" <%=clase%>" role="alert">
+            <span class="font-weight-bold">
+                MENSAJE
+            </span> : <%=mensaje%>
+        </div>
+        <% } %>
+
+
     <div class="row">
         <div class="col-sm-6">
             <% const estaCreando = typeof conductor === "undefined"%>

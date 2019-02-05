@@ -50,6 +50,14 @@ export class AutoEntity {
     })
     anio: number;
 
+/*
+    @Index()
+    @Column({
+        name: 'conductorIdConductor',
+        type: 'int'
+    })
+    idConductor: number;
+*/
 
     @ManyToOne(
         type => ConductorEntity,

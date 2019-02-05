@@ -1,6 +1,19 @@
 <%- include('header.ejs',{titulo:'Gestion de Autos'});%>
 
 <div class="container">
+
+
+    <% const existeMensaje = typeof mensaje!== "undefined"%>
+
+    <%if(existeMensaje){ %>
+        <div class=" <%=clase%>" role="alert">
+            <span class="font-weight-bold">
+                MENSAJE
+            </span> : <%=mensaje%>
+    </div>
+    <% } %>
+
+
     <div class="row">
         <div class="col-sm-6">
             <% const estaCreando = typeof auto === "undefined"%>
@@ -67,27 +80,27 @@
                            min="1950"
                            max="2019"
                            step="1"
-
                            value="<%= estaCreando ? '' : auto.anio %>"
                     >
                 </div>
 
-                <form action="">
-                    <div class="form-group">
-                        <label for="conductores">seleccionar un conductor</label>
-                        <select  class="form-control" id="conductores">
+                <div class="form-group">
+                    <label for="conductor">seleccionar un conductor</label>
+                    <select  class="form-control" id="conductor" name="conductor">
 
-                            <% arregloConductores.forEach( (conductor)=> { %>
-                                <option
-                                    value="<%=conductor.id %>"
-                                > 
-                                    <%=conductor.nombre  %> 
-                                    <%=conductor.apellido  %>
-                                </option>
-                            <% }) %>
+                        <% arregloConductores.forEach( (conductor)=> { %>
+                            <option
+                                value="<%=conductor.idConductor %>"
+                            > 
+                                <%=conductor.nombre  %> 
+                                <%=conductor.apellido  %>
+                            </option>
+                        <% }) %>
 
-                        </select>
-                    </div>
+                    </select>
+                </div>
+
+                    
                     <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
                 </form>
 <!--  -->
@@ -104,9 +117,14 @@
 <%- include('librerias.ejs')%>
 <script>
 
-    $(function() {
-    $( "#datepicker" ).datepicker({dateFormat: 'yy'});
-    });​
+const etiquetaSelectConductor = document.getElementById('conductor');
+let valorActualConductor = etiquetaSelectConductor.value;
+
+etiquetaSelectConductor.onchange = (evento) =>{
+        valorActualConductor = etiquetaSelectConductor.value;
+        console.log("Conductor ejs: "  +valorActualConductor + "tipo: "+ typeof(valorActualConductor));
+        
+    };
 
 </script>
 

@@ -4,6 +4,7 @@ import { EventoEntity } from "./evento.entity";
 import { FindManyOptions, Like } from "typeorm";
 import { CreateEventoDto } from "./dto/create-evento.dto";
 import { ValidationError, validate } from "class-validator";
+import { PlainObjectToNewEntityTransformer } from "typeorm/query-builder/transformer/PlainObjectToNewEntityTransformer";
 
 
 @Controller('evento')
@@ -75,19 +76,35 @@ export class EventoController{
 
     @Get('crear-evento')
     crearEventoRuta(
-        @Res() response
+        @Res() response,
+        @Query('errorCrear') errorCrear
     ){
+        let mensaje= undefined;
+        let clase = undefined;
+        if(errorCrear){
+            
+            mensaje = `Error creando`;
+            clase = 'alert alert-danger';
+        }
         response.render(
             'crear-evento',
-            {titulo: 'Crear evento'}
+            {
+                titulo: 'Crear evento',
+                mensaje: mensaje,
+                clase: clase
+            }
         )
     }
 
     @Post('crear-evento')
     async crearEvento(
         @Res() response,
-        @Body() evento: Evento
+        @Body() evento
     ){
+        console.log(evento.nombre +"\n"+ 
+        evento.fecha +"\n"+
+        evento.coords + "\n")
+        
         const validarEvento = new CreateEventoDto();
 
         validarEvento.nombre = evento.nombre;
@@ -98,7 +115,14 @@ export class EventoController{
         const  hayErrores = errores.length >0;
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            //throw new BadRequestException({mensaje: 'Error de validación en crear'})
+
+            const parametrosConsulta = `?errorCrear=${
+                errores[0]
+            }`;
+            
+            response.redirect('/evento/crear-evento'+parametrosConsulta)
+
         }else{
             await this._eventoService.crear(evento);
             const parametrosConsulta = `?accion=crear&nombre=${
@@ -107,6 +131,7 @@ export class EventoController{
             
             response.redirect('/evento/inicio'+parametrosConsulta)
         }
+        
 
         
     }
@@ -114,15 +139,26 @@ export class EventoController{
     @Get('actualizar-evento/:idEvento')
     async actualizareventoVista(
         @Res() response,
+        @Query() error,
         @Param('idEvento') idEvento: string
     ){
+
+        let mensaje= undefined;
+        let clase = undefined;
+        if(error ){
+            
+            mensaje = `Error: ${error}`;
+            clase = 'alert alert-danger';
+        }
         const eventoEncontrado = await this._eventoService
         .buscarPorId(+idEvento);
 
         response.render(
             'crear-evento',
             {
-                evento: eventoEncontrado
+                evento: eventoEncontrado,
+                mensaje: mensaje,
+                clase: clase
             }
         )
     }
@@ -144,7 +180,14 @@ export class EventoController{
         const  hayErrores = errores.length >0;
 
         if(hayErrores){
-            throw new BadRequestException({mensaje: 'Error de validación en crear'})
+            //throw new BadRequestException({mensaje: 'Error de validación en crear'})
+
+            const parametrosConsulta = `?error=${
+                errores.toString()
+            }`;
+            
+            response.redirect('/evento/actualizar-evento/:'+idEvento +parametrosConsulta)
+
         }else{
             evento.idEvento = +idEvento;
             await this._eventoService.actualizar(evento);
@@ -182,3 +225,7 @@ export interface Evento {
     latitud?: string,
     longitud?: string
 }
+
+/*
+ 
+*/

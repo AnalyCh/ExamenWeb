@@ -27,5 +27,8 @@ export class CreateAutoDto{
     @IsNumber()
     anio: number;
 
+    @IsNotEmpty()
+    @IsNumber()
+    conductor: number;
 
 }

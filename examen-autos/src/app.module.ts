@@ -15,7 +15,7 @@ import { EventoPorAutoEntity } from './evento-por-auto/evento-por-auto.entity';
         TypeOrmModule.forRoot({
             type: "mysql",
             host: "localhost",
-            port: 32773,
+            port: 32769,
             database: 'vehiculos',
             username: 'root',
             password: 'root',
