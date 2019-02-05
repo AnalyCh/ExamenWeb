@@ -1,26 +1,20 @@
 
-<%- include('header',{titulo:'Gestion de Eventos'}); %>
+<%- include('header',{titulo:'Lista de Eventos'}); %>
 
 <div class="container">
 
+    <% const existeNombreEvento = typeof nombreEvento!== "undefined"%>
 
-    <% const existeMensaje = typeof mensaje!== "undefined"%>
-
-    <%if(existeMensaje){ %>
-    <div class=" <%=clase%>" role="alert">
-        <span class="font-weight-bold">
-            MENSAJE
-        </span> : <%=mensaje%>
-    </div>
+    <%if(existeNombreEvento){ %>
+        <p class="font-weight-bold">
+            <%=nombreEvento%>
+        </p>  
     <% } %>
 
     <h1>Gestion de Eventos</h1>
-    <p>Busque, cree, actualice y elimine Eventos
-        Puede buscar Eventos por  el nombre, la fecha o ...</p>
+    <p>Busque eventos
+        Puede buscar Eventos por  el nombre, la fecha, latitud, longitud</p>
 
-    <% if(booleano){%>
-        <p> Usted creo un evento</p>
-    <% }%>
     <form method="get" action="/evento/inicio" >
         <div class="row">
             <div class="col-sm-9">
@@ -36,19 +30,8 @@
         </div>
     </form>
 
-    <div class="row">
-        <div class="col-sm-9"></div>
-        <div class="col-sm-3">
-            <a href="/evento/crear-evento" class="quitar-link">
-                <button class="btn btn-outline-success btn-block">
-                    Crear evento
-                </button>
-            </a>
-        </div>
-    </div>
 
     <h2> lista de Eventos</h2>
-    <p>Listado de las Eventos, actualice o elimine Eventos</p>
 
     <br>
 
@@ -60,9 +43,7 @@
                 <!-- th -> table header -->
                 <th width= "auto">Nombre</th>
                 <th width="auto">Fecha</th>
-                <th width="auto">Latitud</th>
-                <th width="auto">Longitud</th>
-                <th width="auto">Acciones</th>
+                <th width="auto">Detalle</th>
                 
             </tr>
             </thead>
@@ -73,20 +54,12 @@
                     <!-- td -> table detail -->
                     <td><%= evento.nombre %></td>
                     <td><%= evento.fecha %></td>
-                    <td><%= evento.latitud %></td>
-                    <td><%= evento.longitud %></td>
                     
                     <td>
-                        <form action="/evento/eliminar/<%= evento.idevento %>" method="POST">
-                            <button class="btn btn-outline-danger btn-block"
-                                    type="submit">
-                                Eliminar
-                            </button>
-                        </form>
                         <a class="quitar-link"
-                           href="/evento/actualizar-evento/<%= evento.idEvento %>">
+                           href="/evento/listar-evento-publico/<%= evento.idEvento %>">
                             <button class="btn btn-outline-info btn-block">
-                                Actualizar
+                                Ver
                             </button>
                         </a>
                     </td>

@@ -108,17 +108,26 @@ export class EventoController{
         const validarEvento = new CreateEventoDto();
 
         validarEvento.nombre = evento.nombre;
-        validarEvento.fecha = evento.fecha;
+        const fec = new Date(evento.fecha).toISOString();
+        validarEvento.fecha = fec;
         validarEvento.latitud = evento.latitud;
         validarEvento.longitud = evento.longitud;
         const errores: ValidationError[] = await validate(validarEvento);
         const  hayErrores = errores.length >0;
+        const listaError = [];
+        console.log(errores)
+        errores.forEach(
+            (error) => {
+                listaError.push(error.property)
+                console.log(error.property)
+            }
+        );
 
         if(hayErrores){
             //throw new BadRequestException({mensaje: 'Error de validación en crear'})
 
             const parametrosConsulta = `?errorCrear=${
-                errores[0]
+                listaError.toString()
             }`;
             
             response.redirect('/evento/crear-evento'+parametrosConsulta)
@@ -139,13 +148,13 @@ export class EventoController{
     @Get('actualizar-evento/:idEvento')
     async actualizareventoVista(
         @Res() response,
-        @Query() error,
+        @Query('error') error,
         @Param('idEvento') idEvento: string
     ){
 
         let mensaje= undefined;
         let clase = undefined;
-        if(error ){
+        if(error){
             
             mensaje = `Error: ${error}`;
             clase = 'alert alert-danger';
@@ -173,17 +182,26 @@ export class EventoController{
         const validarEvento = new CreateEventoDto();
 
         validarEvento.nombre = evento.nombre;
-        validarEvento.fecha = evento.fecha;
+        const fec = new Date(evento.fecha).toISOString();
+        validarEvento.fecha = fec;
         validarEvento.latitud = evento.latitud;
         validarEvento.longitud = evento.longitud;
         const errores: ValidationError[] = await validate(validarEvento);
         const  hayErrores = errores.length >0;
+        const listaError = [];
+        console.log(errores)
+        errores.forEach(
+            (error) => {
+                listaError.push(error.property)
+                console.log(error.property)
+            }
+        );
 
         if(hayErrores){
             //throw new BadRequestException({mensaje: 'Error de validación en crear'})
 
             const parametrosConsulta = `?error=${
-                errores.toString()
+                listaError.toString()
             }`;
             
             response.redirect('/evento/actualizar-evento/:'+idEvento +parametrosConsulta)
@@ -214,6 +232,65 @@ export class EventoController{
         }`;
         response.redirect('/evento/inicio'+ parametrosConsulta)
         
+    }
+
+
+
+    //PUBLICO
+    @Get('inicio-publico')
+    async inicioPublico(
+        @Res() response,
+        @Query('busqueda') busqueda,
+        
+    ){
+        
+        let eventos: EventoEntity[];
+        if(busqueda){
+            const consulta: FindManyOptions<EventoEntity> = {
+                where: [
+                    {
+                        nombre: Like(`%${busqueda}`)
+                    },
+                    {
+                        fecha: Like(`%${busqueda}`)
+                    },
+                    {
+                        latitud: Like(`%${busqueda}`)
+                    },
+                    {
+                        longitud: Like(`%${busqueda}`)
+                    }
+                ]
+            };
+            eventos = await this._eventoService.buscar(consulta);
+        } else{
+            eventos = await this._eventoService.buscar();
+        }
+
+        response.render(
+            'mostrar-eventos-publico',
+            {
+                arreglo: eventos
+            }
+        )
+
+    }
+
+    @Get('listar-evento-publico')
+    async listarEventoPublico(
+        @Res() response,
+        @Query('busqueda') busqueda,
+        
+    ){
+        
+
+        response.render(
+            'mostrar-eventos-publico',
+            {
+                
+            }
+        )
+
     }
 
 }
