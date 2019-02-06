@@ -1,8 +1,8 @@
-import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany, ManyToOne} from "typeorm";
-import { type } from "os";
-import { ConductorEntity } from "src/conductor/conductor.entity";
-import { EventoPorAutoEntity } from "src/evento-por-auto/evento-por-auto.entity";
-import { UsuarioEntity } from "src/usuario/usuario.entity";
+import {Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {ConductorEntity} from "../conductor/conductor.entity";
+import {EventoPorConductorEntity} from "../evento-por-conductor/evento-por-conductor.entity";
+import {UsuarioEntity} from "../usuario/usuario.entity";
+
 
 @Entity('auto')
 export class AutoEntity {
@@ -55,19 +55,17 @@ export class AutoEntity {
         type => ConductorEntity,
         conductor => conductor.autos
     )
-    conductor: ConductorEntity;
+    idConductor: ConductorEntity;
 
-    @OneToMany(
-        type => EventoPorAutoEntity,
-        eventoPorAuto => eventoPorAuto.auto
-    )
-    eventoPorAutos: EventoPorAutoEntity[];
 
     @ManyToOne(
         type => UsuarioEntity,
         usuario => usuario.autos
     )
-    usuario: UsuarioEntity;
+    idUsuario: UsuarioEntity;
+
+
+
 
 
 

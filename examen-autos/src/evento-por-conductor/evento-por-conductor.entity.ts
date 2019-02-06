@@ -1,27 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { AutoEntity } from "src/auto/auto-entity";
+import { Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { EventoEntity } from "src/evento/evento.entity";
+import {ConductorEntity} from "../conductor/conductor.entity";
 
 
 @Entity('eventoPorAuto')
-export class EventoPorAutoEntity{
+export class EventoPorConductorEntity{
     
     @PrimaryGeneratedColumn()
     idEventoPorAuto: string;
 
-
     @ManyToOne(
-        type => AutoEntity,
-        auto => auto.eventoPorAutos
+        type => ConductorEntity,
+        conductor => conductor.eventoPorConductores
     )
-    auto: AutoEntity;
+    conductor: ConductorEntity;
 
     @ManyToOne(
         type => EventoEntity,
         evento => evento.eventosPorAuto
     )
     evento: EventoEntity;
-
 
 
 }

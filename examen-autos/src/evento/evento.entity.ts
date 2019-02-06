@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Index, Column, OneToMany } from "typeorm";
-import { EventoPorAutoEntity } from "src/evento-por-auto/evento-por-auto.entity";
+import { EventoPorConductorEntity } from "src/evento-por-conductor/evento-por-conductor.entity";
 
 
 @Entity('evento')
@@ -38,10 +38,10 @@ export class EventoEntity{
 
 
     @OneToMany(
-        type => EventoPorAutoEntity,
+        type => EventoPorConductorEntity,
         eventosPorAuto => eventosPorAuto.evento
     )
-    eventosPorAuto: EventoPorAutoEntity[];
+    eventosPorAuto: EventoPorConductorEntity[];
 
 
 

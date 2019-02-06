@@ -2,6 +2,6 @@ import { Controller } from "@nestjs/common";
 
 @Controller()
 
-export class EventoPorAutoController{
+export class EventoPorConductorController{
 
 }

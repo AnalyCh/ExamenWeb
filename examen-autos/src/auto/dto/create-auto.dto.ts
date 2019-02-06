@@ -1,5 +1,6 @@
 
-import {IsNotEmpty, IsOptional, IsString, IsNumber} from "class-validator";
+import {IsNotEmpty, IsString, IsNumber} from "class-validator";
+import {CreateConductorDto} from "../../conductor/dto/create-conductor.dto";
 
 
 export class CreateAutoDto{
@@ -29,6 +30,12 @@ export class CreateAutoDto{
 
     @IsNotEmpty()
     @IsNumber()
-    conductor: number;
+    idConductor: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    idUsuario: number;
+
+
 
 }

@@ -4,7 +4,6 @@ import { EventoEntity } from "./evento.entity";
 import { FindManyOptions, Like } from "typeorm";
 import { CreateEventoDto } from "./dto/create-evento.dto";
 import { ValidationError, validate } from "class-validator";
-import { PlainObjectToNewEntityTransformer } from "typeorm/query-builder/transformer/PlainObjectToNewEntityTransformer";
 
 
 @Controller('evento')
@@ -189,7 +188,7 @@ export class EventoController{
         const errores: ValidationError[] = await validate(validarEvento);
         const  hayErrores = errores.length >0;
         const listaError = [];
-        console.log(errores)
+        console.log(errores);
         errores.forEach(
             (error) => {
                 listaError.push(error.property)

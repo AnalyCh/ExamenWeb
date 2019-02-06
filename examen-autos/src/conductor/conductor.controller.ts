@@ -1,4 +1,4 @@
-import { Controller, Get, Res, Query, Post, Body, Param, BadRequestException } from "@nestjs/common";
+import { Controller, Get, Res, Query, Post, Body, Param} from "@nestjs/common";
 import { ConductorService } from "./conductor.service";
 import { ConductorEntity } from "./conductor.entity";
 import { FindManyOptions, Like } from "typeorm";

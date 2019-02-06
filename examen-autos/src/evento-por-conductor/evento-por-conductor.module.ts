@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { EventoPorAutoController } from "./evento-por-auto.controller";
+import { EventoPorConductorController } from "./evento-por-conductor.controller";
 
 
 @Module(
@@ -8,16 +8,16 @@ import { EventoPorAutoController } from "./evento-por-auto.controller";
         imports:[
             TypeOrmModule.forFeature(
                 [
-                    EventoPorAutoModule
+                    EventoPorConductorModule
                 ]
             )
         ],
         controllers:[
-            EventoPorAutoController
+            EventoPorConductorController
         ],
         providers:[
         ],
         exports:[]
     }
 )
-export class EventoPorAutoModule {}
+export class EventoPorConductorModule {}

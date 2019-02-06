@@ -1,9 +1,6 @@
-import {Controller, Get, Res, Query, Post, Body, BadGatewayException, BadRequestException, Param} from "@nestjs/common";
-import { SrvRecord } from "dns";
+import {Controller, Get, Res, Query, Post, Body,  BadRequestException, Param} from "@nestjs/common";
 import { AutoService } from "./auto.service";
-import { async } from "rxjs/internal/scheduler/async";
-import { response } from "express";
-import { AutoEntity } from "./auto-entity";
+import { AutoEntity } from "./auto.entity";
 import { FindManyOptions, Like } from "typeorm";
 import { CreateAutoDto } from "./dto/create-auto.dto";
 import { ValidationError, validate } from "class-validator";
@@ -108,7 +105,7 @@ export class AutoController {
     ){
         const objetoValidacionAuto = new CreateAutoDto();
         
-        auto.chasis = Number(auto.chasis)
+        auto.chasis = Number(auto.chasis);
     
         objetoValidacionAuto.chasis = auto.chasis;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
@@ -117,18 +114,19 @@ export class AutoController {
         objetoValidacionAuto.nombreModelo = auto.nombreModelo;
         auto.anio= Number(auto.anio);
         objetoValidacionAuto.anio = auto.anio;
-        console.log(auto.conductor);
-        auto.conductor = Number(auto.conductor)
-        objetoValidacionAuto.conductor = auto.conductor;
+        console.log(auto.idConductor);
+        auto.idConductor = Number(auto.idConductor);
+        objetoValidacionAuto.idConductor = auto.idConductor;
+        //objetoValidacionAuto.idUsuario = auto.idUsuario;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
-        console.log("numero de errores en crear auto: "+errores.length)
-        const mensajeError = errores[0]
+        console.log("numero de errores en crear auto: "+errores.length);
+        const mensajeError = errores[0];
 
         console.log(auto.nombreMarca+ "\n"+
                     auto.colorUno +"\n"+
-                    auto.conductor);
+                    auto.idConductor);
         
 
         if(hayErrores){
@@ -159,7 +157,7 @@ export class AutoController {
         const autoEncontrado = await this._autoService
         .buscarPorId(+idAuto);
 
-        console.log(autoEncontrado.idAuto + " "+ autoEncontrado.chasis)
+        console.log(autoEncontrado.idAuto + " "+ autoEncontrado.chasis);
 
         let conductores: ConductorEntity[];
         conductores = await this._conductorService.buscar();
@@ -182,7 +180,7 @@ export class AutoController {
         //
         const objetoValidacionAuto = new CreateAutoDto();
 
-        auto.chasis = Number(auto.chasis)
+        auto.chasis = Number(auto.chasis);
 
         objetoValidacionAuto.chasis = auto.chasis;
         objetoValidacionAuto.nombreMarca = auto.nombreMarca;
@@ -192,18 +190,19 @@ export class AutoController {
 
         auto.anio = Number(auto.anio);
         objetoValidacionAuto.anio = auto.anio;
-        auto.conductor = Number(auto.conductor)
-        objetoValidacionAuto.conductor = auto.conductor;
+        auto.idConductor = Number(auto.idConductor);
+        objetoValidacionAuto.idConductor = auto.idConductor;
 
         const errores: ValidationError[] = await validate(objetoValidacionAuto);
         const  hayErrores = errores.length >0;
-        const mensajeError = errores[0]
-        console.log("error: "+mensajeError)
-        console.log("error: "+errores.length)
+        const mensajeError = errores[0];
+        console.log("error: "+mensajeError);
+        console.log("error: "+errores.length);
 
         if(hayErrores){
             throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: mensajeError})
         }else{
+            // @ts-ignore
             await this._autoService.actualizar(auto);
             const parametrosConsulta = `?accion=actualizar&nombreMarca=${
                 auto.nombreMarca
@@ -235,14 +234,16 @@ export class AutoController {
 }
 
 export interface Auto{
-    idAuto?: number,
-    chasis?: number,
-    nombreMarca?: string,
-    colorUno?: string,
-    colorDos?: string,
-    nombreModelo?: string,
-    anio?: number,
-    conductor?: number 
+    idAuto: number,
+    chasis: number,
+    nombreMarca: string,
+    colorUno: string,
+    colorDos: string,
+    nombreModelo: string,
+    anio: number,
+    idConductor?: number,
+    idUsuario?: number
+
 }
 
 // value="<%=conductor.id %>"  // "<%= estaCreando ? "<%=conductor.id %>": auto.conductor %>" 

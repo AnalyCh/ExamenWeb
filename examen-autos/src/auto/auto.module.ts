@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AutoEntity } from "./auto-entity";
+import { AutoEntity } from "./auto.entity";
 import { AutoController } from "./auto.controller";
 import { AutoService } from "./auto.service";
 import { ConductorService } from "src/conductor/conductor.service";
