@@ -66,7 +66,7 @@ export class ConductorController{
     @Get('crear-conductor')
     crearConductorRuta(
         @Res() response,
-        @Query() error
+        @Query('error') error
     ){
         let mensaje= undefined;
         let clase = undefined;
@@ -116,14 +116,22 @@ export class ConductorController{
         const mensajeError = errores[0];
         const  hayErrores = errores.length >0;
         console.log("numeroerrores: "+errores.length);
+        const listaError = [];
+        console.log(errores)
+        errores.forEach(
+            (error) => {
+                listaError.push(error.property)
+                console.log(error.property)
+            }
+        );
 
         if(hayErrores){
             //throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
             const parametrosConsulta = `?error=${
-                errores.toString()
+                listaError.toString()
             }`;
             
-            response.redirect('/conductor/crear-conductor/:'+parametrosConsulta)
+            response.redirect('/conductor/crear-conductor/'+parametrosConsulta)
         }else{
             await this._conductorService.crear(conductor);
             const parametrosConsulta = `?accion=crear&nombre=${
@@ -139,7 +147,7 @@ export class ConductorController{
     @Get('actualizar-conductor/:idConductor')
     async actualizarConductorVista(
         @Res() response,
-        @Query() error,
+        @Query('error') error,
         @Param('idConductor') idConductor: string
     ){
         const conductorEncontrado = await this._conductorService

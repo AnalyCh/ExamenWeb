@@ -127,13 +127,20 @@ export class AutoController {
         console.log(auto.nombreMarca+ "\n"+
                     auto.colorUno +"\n"+
                     auto.idConductor);
-        
+        const listaError = [];
+        console.log(errores)
+        errores.forEach(
+            (error) => {
+                listaError.push(error.property)
+                console.log(error.property)
+            }
+        );
 
         if(hayErrores){
             //throw new BadRequestException({mensaje: 'Error de validación en crear', error: mensajeError})
 
             const parametrosConsulta = `?error=${
-                errores
+                listaError.toString()
             }`;
             
             response.redirect('/auto/crear-auto'+parametrosConsulta)
@@ -198,6 +205,14 @@ export class AutoController {
         const mensajeError = errores[0];
         console.log("error: "+mensajeError);
         console.log("error: "+errores.length);
+        const listaError = [];
+        console.log(errores);
+        errores.forEach(
+            (error) => {
+                listaError.push(error.property)
+                console.log(error.property)
+            }
+        );
 
         if(hayErrores){
             throw new BadRequestException({mensaje: 'Error de validación en actualizar', error: mensajeError})
