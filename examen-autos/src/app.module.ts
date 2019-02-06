@@ -15,10 +15,10 @@ import { UsuarioEntity } from './usuario/usuario.entity';
       {
           type: 'mysql',
           host: 'localhost',
-          port: 3306,
-          database: 'vehiculos',
-          username: 'root',
-          password: 'contraseña',
+          port: 3306,   
+          username: 'jaya',
+          password: 'jaya',
+          database: 'prueba',
           synchronize: true,
           dropSchema: true,
           entities: [
