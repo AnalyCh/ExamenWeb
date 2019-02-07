@@ -13,13 +13,13 @@ export class EventoPorConductorEntity{
         type => ConductorEntity,
         conductor => conductor.eventoPorConductores
     )
-    conductor: ConductorEntity;
+    idConductor: ConductorEntity;
 
     @ManyToOne(
         type => EventoEntity,
         evento => evento.eventosPorAuto
     )
-    evento: EventoEntity;
+    idEvento: EventoEntity;
 
 
 }

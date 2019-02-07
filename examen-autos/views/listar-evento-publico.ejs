@@ -1,5 +1,5 @@
 
-<%- include('header',{titulo:'Lista de Eventos'}); %>
+<%- include('header',{titulo:'Evento'}); %>
 
 <div class="container">
 
@@ -11,69 +11,31 @@
         </p>  
     <% } %>
 
-    <h1>Gestion de Eventos</h1>
-    <p>Busque eventos
-        Puede buscar Eventos por  el nombre, la fecha, latitud, longitud</p>
 
-    <form method="get" action="/evento/inicio" >
-        <div class="row">
-            <div class="col-sm-9">
-                <label for="busqueda">Busqueda</label>
-                <input id="busqueda" type="text" name="busqueda">
-                <br>
+    
+    
+    <div class="row">
+        <% arreglo.forEach( (conductor)=> { %>
+            <div class="col-md-2">
+                <thead>
+                    <tr>
+                        <th><%= conductor.nombre %></th>                                                            
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><%= conductor.apellido %></td>
+                        <td><%= conductor.fechaDeNacimiento %></td>
+                        <td><%= conductor.licenciaValida %></td>    
+                    </tr>                            
+                </tbody>
             </div>
-            <div class="col-sm-3">
-                <button class="btn btn-outline-success btn-block">
-                    Buscar
-                </button>
-            </div>
-        </div>
-    </form>
 
-
-    <h2> lista de Eventos</h2>
-
-    <br>
-
-    <div class="scroll-tabla">
-        <table class="table table-hover animated slideInLeft">
-            <!-- tr -> table row -->
-            <thead>
-            <tr>
-                <!-- th -> table header -->
-                <th width= "auto">Nombre</th>
-                <th width="auto">Fecha</th>
-                <th width="auto">Detalle</th>
-                
-            </tr>
-            </thead>
-            <!-- tr -> table row -->
-            <tbody>
-            <% arreglo.forEach( (evento)=> { %>
-                <tr>
-                    <!-- td -> table detail -->
-                    <td><%= evento.nombre %></td>
-                    <td><%= evento.fecha %></td>
-                    
-                    <td>
-                        <a class="quitar-link"
-                           href="/evento/listar-evento-publico/<%= evento.idEvento %>">
-                            <button class="btn btn-outline-info btn-block">
-                                Ver
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-            <% }) %>
-            </tbody>
-
-        </table>
+        <% }) %>
     </div>
+
 </div>
 
 <%- include('librerias.ejs');%>
-<script>
-    //nuestros js
-</script>
 
 <%- include('footer');%>

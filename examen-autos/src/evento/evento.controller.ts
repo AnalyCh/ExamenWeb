@@ -275,23 +275,7 @@ export class EventoController{
 
     }
 
-    @Get('listar-evento-publico')
-    async listarEventoPublico(
-        @Res() response,
-        @Query('busqueda') busqueda,
-        
-    ){
-        
-
-        response.render(
-            'mostrar-eventos-publico',
-            {
-                
-            }
-        )
-
-    }
-
+    
 }
 
 export interface Evento {
