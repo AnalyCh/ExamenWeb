@@ -1,6 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EventoPorConductorController } from "./evento-por-conductor.controller";
+import {EventoPorConductorService} from "./evento-por-conductor.service";
+import {EventoService} from "../evento/evento.service";
+import {ConductorService} from "../conductor/conductor.service";
+import {EventoPorConductorEntity} from "./evento-por-conductor.entity";
+import {EventoEntity} from "../evento/evento.entity";
+import {ConductorEntity} from "../conductor/conductor.entity";
 
 
 @Module(
@@ -8,7 +14,9 @@ import { EventoPorConductorController } from "./evento-por-conductor.controller"
         imports:[
             TypeOrmModule.forFeature(
                 [
-                    EventoPorConductorModule
+                    EventoPorConductorEntity,
+                    EventoEntity,
+                    ConductorEntity
                 ]
             )
         ],
@@ -16,8 +24,13 @@ import { EventoPorConductorController } from "./evento-por-conductor.controller"
             EventoPorConductorController
         ],
         providers:[
+            EventoPorConductorService,
+            EventoService,
+            ConductorService
         ],
-        exports:[]
+        exports:[
+            EventoPorConductorService
+        ]
     }
 )
 export class EventoPorConductorModule {}

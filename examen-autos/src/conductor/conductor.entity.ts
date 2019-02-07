@@ -1,5 +1,5 @@
 import {Column, Entity, Index, PrimaryGeneratedColumn, OneToMany, ManyToOne} from "typeorm";
-import { AutoEntity } from "src/auto/auto.entity";
+import {AutoEntity} from "../auto/auto.entity";
 import {EventoPorConductorEntity} from "../evento-por-conductor/evento-por-conductor.entity";
 
 
@@ -36,6 +36,8 @@ export class ConductorEntity {
     })
     licenciaValida: boolean ;
 
+
+
     @OneToMany(
         type => AutoEntity,
         auto => auto.idConductor
@@ -44,7 +46,7 @@ export class ConductorEntity {
 
     @OneToMany(
         type => EventoPorConductorEntity,
-        eventoPorConductor => eventoPorConductor.conductor
+        eventoPorConductor => eventoPorConductor.idConductor
     )
     eventoPorConductores: EventoPorConductorEntity[];
 

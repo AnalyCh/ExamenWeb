@@ -1,20 +1,20 @@
 import {IsNotEmpty, IsString, IsDate, IsBoolean, IsNumber, IsDateString, IsBooleanString} from "class-validator"
 
 export class CreateConductorDto{
-    @IsNotEmpty()
-    @IsString()
+    @IsNotEmpty({message: 'Nombre no puede ser vacio'})
+    @IsString({message: 'Nombre debe ser string'})
     nombre: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({message: 'Apellido no puede ser vacio'})
     @IsString()
     apellido: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({message: 'Fecha no puede ser vacio'})
     @IsDateString()
     //@IsDate()
     fechaDeNacimiento: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({message: 'Licencia no puede ser vacio'})
     @IsBoolean()
     licenciaValida: boolean;
 

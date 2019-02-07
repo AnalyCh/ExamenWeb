@@ -3,6 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { EventoEntity } from "./evento.entity";
 import { EventoController } from "./evento.controller";
 import { EventoService } from "./evento.service";
+import {ConductorService} from "../conductor/conductor.service";
+import {ConductorEntity} from "../conductor/conductor.entity";
 
 
 @Module(
@@ -10,7 +12,8 @@ import { EventoService } from "./evento.service";
         imports:[
             TypeOrmModule.forFeature(
                 [
-                    EventoEntity
+                    EventoEntity,
+                    ConductorEntity
                 ]
             )
         ],
@@ -18,7 +21,9 @@ import { EventoService } from "./evento.service";
             EventoController,
         ],
         providers: [
-            EventoService
+            ConductorService,
+            EventoService,
+
         ],
         exports:[
             EventoService

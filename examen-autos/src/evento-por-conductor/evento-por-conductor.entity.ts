@@ -1,25 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
-import { EventoEntity } from "src/evento/evento.entity";
 import {ConductorEntity} from "../conductor/conductor.entity";
+import {EventoEntity} from "../evento/evento.entity";
 
 
-@Entity('eventoPorAuto')
+
+@Entity('eventoPorConductor')
 export class EventoPorConductorEntity{
     
     @PrimaryGeneratedColumn()
-    idEventoPorAuto: string;
+    idEventoPorConductor: number;
+
+
 
     @ManyToOne(
         type => ConductorEntity,
         conductor => conductor.eventoPorConductores
     )
-    idConductor: ConductorEntity;
+    idConductor: ConductorEntity["idConductor"]| number;
 
     @ManyToOne(
         type => EventoEntity,
         evento => evento.eventosPorAuto
     )
-    idEvento: EventoEntity;
+    idEvento: EventoEntity["idEvento"] | number;
 
 
 }

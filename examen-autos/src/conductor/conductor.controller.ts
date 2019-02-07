@@ -138,7 +138,7 @@ export class ConductorController{
                 conductor.nombre
             }`;
             
-            response.redirect('/conductor/inicio'+parametrosConsulta)
+            response.redirect('/auto/crear-auto'+parametrosConsulta)
         }
 
         

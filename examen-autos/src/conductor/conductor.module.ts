@@ -21,7 +21,7 @@ import { ConductorService } from "./conductor.service";
             ConductorService
         ],
         exports:[
-            ConductorService,
+            ConductorService
         ]
     }
 )

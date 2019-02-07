@@ -17,6 +17,7 @@ export class AutoService {
     }
 
     crear(auto: Auto): Promise<AutoEntity>{
+        // @ts-ignore
         const autoEntity: AutoEntity = this._autoRepository.create(auto);
         return this._autoRepository.save(autoEntity)
     }

@@ -1,7 +1,7 @@
 import {Column, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {ConductorEntity} from "../conductor/conductor.entity";
-import {EventoPorConductorEntity} from "../evento-por-conductor/evento-por-conductor.entity";
 import {UsuarioEntity} from "../usuario/usuario.entity";
+
 
 
 @Entity('auto')
@@ -50,6 +50,7 @@ export class AutoEntity {
         type: 'int'
     })
     anio: number;
+
 
     @ManyToOne(
         type => ConductorEntity,

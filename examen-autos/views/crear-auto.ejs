@@ -6,7 +6,7 @@
     <% const existeMensaje = typeof mensaje!== "undefined"%>
 
     <%if(existeMensaje){ %>
-        <div class=" <%=clase%>" role="alert">
+    <div class=" <%=clase%>" role="alert">
             <span class="font-weight-bold">
                 MENSAJE
             </span> : <%=mensaje%>
@@ -30,9 +30,9 @@
                 <div>
                     <label for="chasis">Chasis</label>
                     <input id="chasis"
-                               name="chasis"
-                               type="number"
-                               value="<%= estaCreando ? '' : auto.chasis %>"
+                           name="chasis"
+                           type="number"
+                           value="<%= estaCreando ? '' : auto.chasis %>"
                     >
                 </div>
 
@@ -85,47 +85,69 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="conductor">seleccionar un conductor</label>
-                    <select  class="form-control" id="conductor" name="conductor">
+                    <label for="idConductor">seleccionar un conductor</label>
+                    <select  class="form-control" id="idConductor" name="idConductor">
 
                         <% arregloConductores.forEach( (conductor)=> { %>
-                            <option
+                        <option
                                 value="<%=conductor.idConductor %>"
-                            > 
-                                <%=conductor.nombre  %> 
-                                <%=conductor.apellido  %>
-                            </option>
+                        >
+                            <%=conductor.nombre  %>
+                            <%=conductor.apellido  %>
+                        </option>
                         <% }) %>
 
                     </select>
                 </div>
 
-                    
-                    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
-                </form>
-<!--  -->
+
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
+            </form>
+            <!--  -->
 
             <a href="/auto/inicio">
                 <button>Regresar</button>
             </a>
         </div>
-        
+        <div class="col-sm-6">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div>
+                <form action="/conductor/crear-conductor/" method="GET">
+                    <button class="btn btn-outline-primary btn-block"
+                            type="submit">
+                        Crear conductor
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </div>
 </div>
 
 
 <%- include('librerias.ejs')%>
 <script>
-
-const etiquetaSelectConductor = document.getElementById('conductor');
-let valorActualConductor = etiquetaSelectConductor.value;
-
-etiquetaSelectConductor.onchange = (evento) =>{
+    const etiquetaSelectConductor = document.getElementById('idConductor');
+    let valorActualConductor = etiquetaSelectConductor.value;
+    etiquetaSelectConductor.onchange = (evento) =>{
         valorActualConductor = etiquetaSelectConductor.value;
         console.log("Conductor ejs: "  +valorActualConductor + "tipo: "+ typeof(valorActualConductor));
-        
-    };
 
+    };
 </script>
 
 

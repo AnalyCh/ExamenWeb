@@ -36,4 +36,8 @@ export class EventoService{
     buscarPorId(idEvento: number): Promise<EventoEntity>{
         return this._eventoRepository.findOne(idEvento);
     }
+
+    buscarPorNombre(nombreEvento: string): Promise<EventoEntity>{
+        return this._eventoRepository.findOne(nombreEvento);
+    }
 }

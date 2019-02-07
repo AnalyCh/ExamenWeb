@@ -37,5 +37,9 @@ export class ConductorService{
         return this._conductorRepository.findOne(idconductor);
     }
 
+    buscarPorIDS(idConductores: number[]):Promise<ConductorEntity[]>{
+        return this._conductorRepository.findByIds(idConductores);
+    }
+
     
 }

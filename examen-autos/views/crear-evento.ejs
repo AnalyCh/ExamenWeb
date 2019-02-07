@@ -14,7 +14,7 @@
 
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-lg-4">
             <% const estaCreando = typeof evento === "undefined"%>
 
 
@@ -25,6 +25,7 @@
             <form action="/evento/<%= estaCreando ? 'crear' : 'actualizar' %>-evento/<%= estaCreando ? '' : evento.idevento %>"
                   method="POST">
 
+
                   <div>
                         <label for="nombre">Nombre del evento</label>
                         <input id="nombre"
@@ -33,7 +34,8 @@
                                value="<%= estaCreando ? '' : evento.nombre %>"
                         >
                     </div>
-    
+
+                <br>
                     <div>
                             <label for="fecha">Fecha del evento</label>
                             <input id="fecha"
@@ -45,13 +47,17 @@
                     </div>
  <!--                   <input type="text" id="coords" /> -->
 
+                <br>
                     <div>
                             <label for="latitud"> Latitud: </label>
                             <input type="text" 
                                     id="latitud" 
-                                    name="latitud"/>
+                                    name="latitud"
+
+                            />
                         </div>
-        
+
+                <br>
                         <div>
                             <label for="longitud">Longitud: </label>
                             <input type="text"
@@ -60,20 +66,79 @@
                         </div>
                 
 <!---->
-                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> evento</button>
+                <br>
+                <button id="botonGuardarActualizar"><%= estaCreando ? 'Crear' : 'Actualizar' %> evento</button>
 
             </form>
+            <br>
 
             <a href="/evento/inicio">
                 <button>Regresar</button>
             </a>
         </div>
 
-        <div class="col-sm-6">
-                <div id="map"></div>
+
+        <div class="col-lg-8">
+            <div id="map"></div>
+        </div>
+        <br>
+
+        <div class="col-lg-12" style="visibility: hidden" id="conductores">
+            <div id="nuevo">
+                <h3>Seleccione los asistentes al evento</h3>
+                <form>
+                        <div class="col-md-6">
+                            <thead>
+                            <tr>
+                                <!-- th -> table header -->
+                                <th width= "auto">Nombre</th>
+                                <th width="auto">Apellido</th>
+                                <th width="auto">Licencia valida</th>
+                                <th width="auto">Acciones</th>
+
+                            </tr>
+                            </thead>
+                            <!-- tr -> table row -->
+                            <tbody>
+                            <% arreglo.forEach( (conductor)=> { %>
+                                <tr>
+                                    <td><%= conductor.nombre %></td>
+                                    <td><%= conductor.apellido %></td>
+                                    <td><%= conductor.licenciaValida %></td>
+                                    <td>
+                                        <form action="/evento-por-conductor/add-conductor/<%= conductor.idConductor %> >" method="POST">
+                                            <div class="col-md-6" >
+                                                <input id="nombre"/>
+
+                                            </div>
+
+                                            <button class="btn btn-outline-danger btn-block"
+                                                    type="submit">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                            </tbody>
+                        </div>
+
+
+                </form>
+
+            </div>
         </div>
         
     </div>
+
+
+
+
+
+
+
+
+
 </div>
 
 
@@ -157,6 +222,16 @@
             etiquetaSelectfecha.min=new  Date().toISOString().split("T")[0];
             
             </script>
+
+<script>
+    const selectBoton = document.getElementById('botonGuardarActualizar');
+    const classConductores = document.getElementById('conductores')
+    selectBoton.onclick = (evento)=>{
+        if(!existeMensaje){
+            classConductores.style = "visibility: visible"
+        }
+    }
+</script>
 
 <%- include('footer'); %>
 

@@ -4,13 +4,16 @@ import { EventoEntity } from "./evento.entity";
 import { FindManyOptions, Like } from "typeorm";
 import { CreateEventoDto } from "./dto/create-evento.dto";
 import { ValidationError, validate } from "class-validator";
+import {ConductorEntity} from "../conductor/conductor.entity";
+import {ConductorService} from "../conductor/conductor.service";
 
 
 @Controller('evento')
 export class EventoController{
 
     constructor(
-        private readonly _eventoService: EventoService
+        private readonly _eventoService: EventoService,
+        private readonly _conductorService: ConductorService
     ){}
 
     @Get('inicio')
@@ -74,7 +77,7 @@ export class EventoController{
     }
 
     @Get('crear-evento')
-    crearEventoRuta(
+    async crearEventoRuta(
         @Res() response,
         @Query('errorCrear') errorCrear
     ){
@@ -85,12 +88,16 @@ export class EventoController{
             mensaje = `Error creando`;
             clase = 'alert alert-danger';
         }
+        let conductores: ConductorEntity[];
+        conductores = await this._conductorService.buscar();
+
         response.render(
             'crear-evento',
             {
                 titulo: 'Crear evento',
                 mensaje: mensaje,
-                clase: clase
+                clase: clase,
+                arreglo: conductores
             }
         )
     }
@@ -137,7 +144,7 @@ export class EventoController{
                 evento.nombre
             }`;
             
-            response.redirect('/evento/inicio'+parametrosConsulta)
+            //response.redirect('/evento/inicio'+parametrosConsulta)
         }
         
 
@@ -235,45 +242,7 @@ export class EventoController{
 
 
 
-    //PUBLICO
-    @Get('inicio-publico')
-    async inicioPublico(
-        @Res() response,
-        @Query('busqueda') busqueda,
-        
-    ){
-        
-        let eventos: EventoEntity[];
-        if(busqueda){
-            const consulta: FindManyOptions<EventoEntity> = {
-                where: [
-                    {
-                        nombre: Like(`%${busqueda}`)
-                    },
-                    {
-                        fecha: Like(`%${busqueda}`)
-                    },
-                    {
-                        latitud: Like(`%${busqueda}`)
-                    },
-                    {
-                        longitud: Like(`%${busqueda}`)
-                    }
-                ]
-            };
-            eventos = await this._eventoService.buscar(consulta);
-        } else{
-            eventos = await this._eventoService.buscar();
-        }
 
-        response.render(
-            'mostrar-eventos-publico',
-            {
-                arreglo: eventos
-            }
-        )
-
-    }
 
     
 }
@@ -285,7 +254,3 @@ export interface Evento {
     latitud?: string,
     longitud?: string
 }
-
-/*
- 
-*/

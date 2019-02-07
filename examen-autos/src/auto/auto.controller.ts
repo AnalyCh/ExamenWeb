@@ -74,7 +74,7 @@ export class AutoController {
     @Get('crear-auto')
     async crearAutoRuta(
         @Res() response,
-        @Query() error
+        @Query('error') error
     ){
         let mensaje = undefined;
         let clase = undefined;
@@ -131,7 +131,7 @@ export class AutoController {
         console.log(errores)
         errores.forEach(
             (error) => {
-                listaError.push(error.property)
+                listaError.push(error.constraints["isNotEmpty"])
                 console.log(error.property)
             }
         );

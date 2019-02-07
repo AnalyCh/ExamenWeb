@@ -12,18 +12,19 @@ import { EventoPorConductorEntity } from './evento-por-conductor/evento-por-cond
 import {UsuarioEntity} from "./usuario/usuario.entity";
 import {RolEntity} from "./rol/rol.entity";
 import {RolesporusuarioEntity} from "./rolesporusuario/rolesporusuario.entity";
+import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conductor.module";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
             type: "mysql",
             host: "localhost",
-            port: 32769,
+            port: 32771,
             database: 'vehiculos',
             username: 'root',
             password: 'root',
             synchronize: true,
-            dropSchema: true,
+            dropSchema: false,
             entities:[
                 ConductorEntity,
                 AutoEntity,
@@ -37,7 +38,9 @@ import {RolesporusuarioEntity} from "./rolesporusuario/rolesporusuario.entity";
         }),
         AutoModule,
         ConductorModule,
-        EventoModule
+        EventoModule,
+        EventoPorConductorModule,
+
 
     ],
     controllers: [AppController],
