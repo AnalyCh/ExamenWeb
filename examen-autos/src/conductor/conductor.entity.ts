@@ -38,11 +38,11 @@ export class ConductorEntity {
 
 
 
-    @OneToMany(
+    @ManyToOne(
         type => AutoEntity,
         auto => auto.idConductor
     )
-    autos: AutoEntity[];
+    autos: AutoEntity;
 
     @OneToMany(
         type => EventoPorConductorEntity,

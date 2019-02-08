@@ -12,27 +12,36 @@
     <% } %>
 
 
-    
-    
-    <div class="row">
+
+
+
         <% arreglo.forEach( (conductor)=> { %>
-            <div class="col-md-2">
-                <thead>
-                    <tr>
-                        <tr><%= conductor.nombre %></tr>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <tr><%= conductor.apellido %></tr>
-                        <tr><%= conductor.fechaDeNacimiento %></tr>
-                        <tr><%= conductor.licenciaValida %></tr>
-                    </tr>                            
-                </tbody>
-            </div>
+
+    <br>
+        <br>
+        <div class="row">
+            <div class="col-sm-4" style="background-color:lavender;"><%= conductor.nombre %></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" style="background-color:lavender;"><%= conductor.apellido %></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" style="background-color:lavender;"><%= conductor.fechaDeNacimiento %></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" style="background-color:lavender;"><%= conductor.licenciaValida %></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4"></div>
+        </div>
+
+    <br>
+    <br>
 
         <% }) %>
-    </div>
+
+
+
 
 </div>
 

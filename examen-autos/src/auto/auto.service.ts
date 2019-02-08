@@ -35,4 +35,8 @@ export class AutoService {
     buscarPorId(idAuto: number): Promise<AutoEntity>{
         return this._autoRepository.findOne(idAuto);
     }
+
+    buscarPorIdSession(idSession: number):Promise<AutoEntity>{
+        return this._autoRepository.findOne({where: {idUsuario: +idSession}})
+    }
 }

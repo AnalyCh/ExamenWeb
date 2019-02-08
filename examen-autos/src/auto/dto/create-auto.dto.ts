@@ -28,13 +28,9 @@ export class CreateAutoDto{
     @IsNumber()
     anio: number;
 
-    @IsNotEmpty({message: 'Seleccione o cree un conductor'})
+    @IsNotEmpty()
     @IsNumber()
-    idConductor: number;
-
-    //@IsNotEmpty()
-    //@IsNumber()
-    //idUsuario: number;
+    idUsuario: number;
 
 
 

@@ -52,11 +52,11 @@ export class AutoEntity {
     anio: number;
 
 
-    @ManyToOne(
+    @OneToMany(
         type => ConductorEntity,
         conductor => conductor.autos
     )
-    idConductor: ConductorEntity;
+    idConductor: ConductorEntity[];
 
 
     @ManyToOne(

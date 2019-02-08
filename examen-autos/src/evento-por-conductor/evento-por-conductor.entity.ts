@@ -14,15 +14,15 @@ export class EventoPorConductorEntity{
 
     @ManyToOne(
         type => ConductorEntity,
-        conductor => conductor.eventoPorConductores
+        conductor => conductor.eventoPorConductores,{eager: true}
     )
-    idConductor: ConductorEntity["idConductor"]| number;
+    idConductor:  number;
 
     @ManyToOne(
         type => EventoEntity,
-        evento => evento.eventosPorAuto
+        evento => evento.eventosPorAuto, {eager: true}
     )
-    idEvento: EventoEntity["idEvento"] | number;
+    idEvento:  number;
 
 
 }

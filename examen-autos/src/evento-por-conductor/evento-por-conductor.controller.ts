@@ -67,29 +67,38 @@ export class EventoPorConductorController{
         @Param('idEvento') idEvento,
         
     ){
-        let eventosConductores: EventoPorConductorEntity[];
+        let eventosConductores;
         
         if(idEvento){
             const consulta: FindManyOptions<EventoPorConductorEntity> = {
-                where: [
+                where:
                     {
-                        idEvento: Like(`${+idEvento}`)
+                        idEvento: idEvento
                     }
-                ]
+
             };
             eventosConductores = await this._eventoPorConductor.buscar(consulta)
 
-            let idConductores = [];
+            eventosConductores.forEach((evento)=>{
+                console.log(JSON.stringify(evento))
+            })
+
+            let idConductores=[];
 
             eventosConductores.forEach(
                 (conductor)=>{
                     idConductores.push(conductor.idConductor)
+                    console.log(conductor.idConductor)
                 }
             );
             const conductores = await this._conductor.buscarPorIDS(idConductores);
+
+            conductores.forEach((conductor)=>{
+                console.log(conductor.idConductor)
+            })
             
             response.render(
-                'listar-eventos-publico',
+                'listar-evento-publico',
                 {
                     arreglo: conductores
                 }
@@ -107,6 +116,10 @@ export class EventoPorConductorController{
         
 
     }
+
+
+
+    //
 
     @Post('crear-evento-por-conductor')
     async crearEventoPorConductor(
@@ -199,23 +212,76 @@ export class EventoPorConductorController{
         )
     }
 
+    @Get('lista-conductores/:idEvento/:idConductor')
+    async addConductorEvento(
+        @Res() response,
+        @Param('idEvento') idEvento: string,
+        @Query('error') error
+    ){
+        let mensaje = undefined;
+        let clase = undefined;
+        if(error ){
+            mensaje = `Error en el compos ${error}`;
+            clase = 'alert alert-danger';
+        }
+        console.log(idEvento);
+        const path =`/lista-conductores/:${idEvento}`;
+        let conductoresEventoActual: ConductorEntity[];
 
-    @Post('lista-conductores/:idEvento/:iConductor')
+
+            const consulta: FindManyOptions<EventoPorConductorEntity> = {
+                where: [
+                    {
+                        idEvento: Number(idEvento)
+                    }
+                ]
+            };
+            const eventosConductores = await this._eventoPorConductor.buscar(consulta);
+            let idConductores = [];
+
+            eventosConductores.forEach(
+                (conductor)=>{
+                    idConductores.push(conductor.idConductor)
+                }
+            );
+            conductoresEventoActual = await this._conductor.buscarPorIDS(idConductores);
+
+        let conductores= await this._conductor.buscar();
+
+        response.render(
+            'add-conductores-a-evento',{
+                arreglo: conductores,
+                conductores: conductoresEventoActual,
+                mensaje: mensaje,
+                path: path,
+                idEvento: idEvento,
+                clase: clase,
+
+
+            }
+        )
+    }
+
+
+    @Post('lista-conductores/:idEvento/:idConductor')
     async aniadirConductor(
         @Res() response,
+
         @Param('idEvento') idEvento: string,
         @Param('idConductor') idConductor: string
     ) {
         console.log(idEvento+ " -" + idConductor)
 
-        const eventoConductor: EventoPorConductor = {"idEvento" : Number(idEvento), "idConductor" : Number(idConductor)};
-        console.log(eventoConductor+ " ")
+        //const eventoConductor: EventoPorConductor = await this._eventoPorConductor.crearUnEventoIntermedio(Number(idEvento), Number(idConductor))
+
+        //let eventoConductor: EventoPorConductor = {idEvento: Number(idEvento), idConductor: Number(idConductor)};
+        //console.log(eventoConductor.idConductor + " "+eventoConductor.idEvento)
 
 
         const validar = new CreateEventoPorConductorDto();
 
-        validar.idConductor = eventoConductor.idConductor;
-        validar.idEvento = eventoConductor.idEvento;
+        validar.idConductor = Number(idConductor);
+        validar.idEvento = Number(idEvento);
 
         const errores: ValidationError[] = await validate(validar);
         const hayErrores = errores.length > 0;
@@ -238,19 +304,23 @@ export class EventoPorConductorController{
             response.redirect('/evento-por-conductor/lista-conductores/' + parametrosConsulta)
         } else {
             const conductorEventoACrear =
-                await this._eventoPorConductor.buscarSiExiste(eventoConductor.idEvento, eventoConductor.idConductor);
+                await this._eventoPorConductor.buscarSiExiste(Number(idEvento), Number(idConductor));
+
 
 
             if(conductorEventoACrear){
-                await this._eventoPorConductor.eliminar(eventoConductor.idEventoPorConductor)
+                console.log(conductorEventoACrear.idConductor)
+                console.log('Si existe');
+                await this._eventoPorConductor.eliminar(Number(idEvento));
                 const parametrosConsulta = `?accion=eliminar`;
 
-                response.redirect('lista-conductores/:idEvento'+parametrosConsulta);
+                response.redirect(''+parametrosConsulta);
             }else {
-                await this._eventoPorConductor.crear(eventoConductor);
-                const parametrosConsulta = `?accion=crear`;
 
-                response.redirect('lista-conductores/:idEvento'+parametrosConsulta);
+                console.log('no existe');
+                await this._eventoPorConductor.crearUnEventoIntermedio(Number(idEvento), Number(idConductor));
+                const parametrosConsulta = `?accion=crear`;
+                response.redirect(''+parametrosConsulta);
             }
 
 

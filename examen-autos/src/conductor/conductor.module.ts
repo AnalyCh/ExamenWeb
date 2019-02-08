@@ -3,6 +3,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConductorEntity } from "./conductor.entity";
 import { ConductorController } from "./conductor.controller";
 import { ConductorService } from "./conductor.service";
+import {AutoService} from "../auto/auto.service";
+import {AutoEntity} from "../auto/auto.entity";
 
 
 @Module(
@@ -10,7 +12,8 @@ import { ConductorService } from "./conductor.service";
         imports:[
             TypeOrmModule.forFeature(
                 [
-                    ConductorEntity
+                    ConductorEntity,
+                    AutoEntity
                 ]
             )
         ],
@@ -18,7 +21,8 @@ import { ConductorService } from "./conductor.service";
             ConductorController
         ],
         providers:[
-            ConductorService
+            ConductorService,
+            AutoService
         ],
         exports:[
             ConductorService

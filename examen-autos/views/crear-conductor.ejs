@@ -64,14 +64,57 @@
                     </select>
                 
                 </div>
+
+
+                <div class="form-group">
+                    <label for="autos">seleccionar un auto</label>
+                    <select  class="form-control" id="autos" name="autos">
+
+                        <% arregloAutos.forEach( (auto)=> { %>
+                        <option
+                                value="<%=auto.idAuto %>"
+                        >
+                            <%=auto.nombreMarca  %>
+                            <%=auto.nombreModelo  %>
+                        </option>
+                        <% }) %>
+
+                    </select>
+                </div>
 <!---->
                 <button><%= estaCreando ? 'Crear' : 'Actualizar' %> conductor</button>
 
             </form>
 
-            <a href="/auto/crear-auto">
+            <a href="/conductor/inicio">
                 <button>Regresar</button>
             </a>
+        </div>
+
+        <div class="col-sm-6">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+            <div>
+                <form action="/auto/crear-auto/" method="GET">
+                    <button class="btn btn-outline-primary btn-block"
+                            type="submit">
+                        Crear auto
+                    </button>
+                </form>
+            </div>
         </div>
         
     </div>

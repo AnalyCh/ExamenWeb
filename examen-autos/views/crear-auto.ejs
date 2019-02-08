@@ -84,21 +84,7 @@
                     >
                 </div>
 
-                <div class="form-group">
-                    <label for="idConductor">seleccionar un conductor</label>
-                    <select  class="form-control" id="idConductor" name="idConductor">
 
-                        <% arregloConductores.forEach( (conductor)=> { %>
-                        <option
-                                value="<%=conductor.idConductor %>"
-                        >
-                            <%=conductor.nombre  %>
-                            <%=conductor.apellido  %>
-                        </option>
-                        <% }) %>
-
-                    </select>
-                </div>
 
 
                 <button><%= estaCreando ? 'Crear' : 'Actualizar' %> auto</button>
@@ -109,31 +95,7 @@
                 <button>Regresar</button>
             </a>
         </div>
-        <div class="col-sm-6">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
 
-            <div>
-                <form action="/conductor/crear-conductor/" method="GET">
-                    <button class="btn btn-outline-primary btn-block"
-                            type="submit">
-                        Crear conductor
-                    </button>
-                </form>
-            </div>
-        </div>
 
     </div>
 </div>

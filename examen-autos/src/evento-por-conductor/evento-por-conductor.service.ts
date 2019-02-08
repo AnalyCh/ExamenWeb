@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import {Repository, FindManyOptions, FindOneOptions} from "typeorm";
 import { EventoPorConductorEntity } from "./evento-por-conductor.entity";
 import {EventoPorConductor} from "./evento-por-conductor.controller";
-import {AutoEntity} from "../auto/auto.entity";
 
 
 @Injectable()
@@ -26,8 +25,8 @@ export class EventoPorConductorService{
         return this._eventoPorConductorRepository.findOne(idEvento)
     }
 
-    buscarSiExiste(idEvento: number, idConductor:number): Promise<EventoPorConductorEntity[]>{
-        return this._eventoPorConductorRepository.find({where:{idEvento: idEvento, idConductor: idConductor}})
+    buscarSiExiste(idEvento: number, idConductor:number): Promise<EventoPorConductorEntity>{
+        return this._eventoPorConductorRepository.findOne({where:{idEvento: idEvento, idConductor: idConductor}})
     }
 
     eliminar(idEvento: number): Promise<EventoPorConductorEntity>{
@@ -39,6 +38,7 @@ export class EventoPorConductorService{
     crearUnEventoIntermedio(idEvento, idConductor){
         let eventoConductor: EventoPorConductor = {idEvento: idEvento, idConductor: idConductor};
         const eventoEntity: EventoPorConductorEntity = this._eventoPorConductorRepository.create(eventoConductor);
+        return this._eventoPorConductorRepository.save(eventoEntity)
     }
 
 
