@@ -1,0 +1,114 @@
+
+<!Doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Roles</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/animate.css">
+    <link rel="stylesheet" href="/css/estilos-generales.css">
+</head>
+<body>
+<div class="container">
+
+<% const existeMensaje = typeof mensaje !== "undefined"%>
+
+<% if (existeMensaje){%>
+
+    <div class="alert alert-primary" role="alert">
+        <span class="font-weight-bold">
+        MENSAJE:
+        </span> <%=mensaje%>
+
+    </div>
+
+<%}%>
+
+    <h1 align="center">Asignar roles</h1>
+
+
+
+
+    <form action="/rol-por-usuario/asignar-rol/<%=usuario.id%>" method="POST">
+
+       <div class="col-sm-3" >
+           <label for="rol">Rol</label>
+
+        <select class="custom-select" name="rol" id="rol">
+            <% opcionesRoles.forEach( (respuesta)=> { %>
+            <option
+                    value="<%=respuesta.id%>"
+            >
+                <%=respuesta.rol_nombre%>
+            </option>
+            <% }) %>
+        </select>
+
+           <button class="btn btn-outline-info estaciado-boton " align="center">Asignar</button>
+        </div>
+
+    </form>
+
+    <div class="modal-body col-sm-2" >
+        <div class="col-md-4 "> <h1 align="center">Usuarios</h1></div>
+
+        <table class="table table-bordered animated fadeInUp">
+
+            <tbody>
+    <tr>
+        <td><%= usuario.nombre_usuario %></td>
+    </tr>
+    <tr>
+        <td><%= usuario.email_usuario %></td>
+    </tr>
+    <tr>
+        <td><%= usuario.fecha_nacimiento_usuario %></td>
+    </tr>
+            </tbody>
+</table>
+
+</div>
+
+
+
+    <div class="modal-body col-sm-2" >
+        <div class="col-md-4 "> <h1 align="center">Roles</h1></div>
+
+        <table class="table table-bordered animated fadeInUp">
+
+            <tbody>
+
+    <%rolUsuario.forEach((rol)=> { %>
+    <tr>
+        <td><%= rol.rol.rol_nombre%></td>
+        <td>
+            <form action="/rol-por-usuario/borrar/<%= rol.id %>" method="POST">
+                <button class="btn btn-danger" type="submit"> X </button>
+            </form>
+        </td>
+    </tr>
+    <% }) %>
+            </tbody>
+</table>
+    </div>
+    <div class="col-md-6">
+
+        <a href="/login">
+            <button class="btn btn-outline-info " align="center">Login</button>
+        </a>
+        <a href="/usuario/inicio">
+            <button class="btn btn-outline-info " align="center">
+                Regresar
+            </button>
+        </a>
+    </div>
+
+</div>
+
+
+</body>
+</html>
+

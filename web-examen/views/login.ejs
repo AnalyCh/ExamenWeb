@@ -1,0 +1,103 @@
+<!Doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/animate.css">
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <% const existeMensaje = typeof mensaje !== "undefined"? true : false;%>
+
+    <% if (existeMensaje){%>
+    <div class="alert alert-primary" role="alert">
+        <span class="font-weight-bold">
+        MENSAJE:
+        </span> <%=mensaje%>
+
+    </div>
+    <%}%>
+
+    <div class="row">
+        <div class="col-lg-3 titulo"></div>
+        <div class="col-md-4 titulo"> <h1 align="center">INICIO DE SESION</h1></div>
+
+    </div>
+    <br>
+    <div class="row" >
+        <div class="col-md-1 titulo">  </div>
+
+        <div class="col-md-9 titulo"><h2 align="center">DATOS PERSONALES</h2></div>
+        <div class="col-md-2 titulo"></div>
+
+    </div>
+    <br>
+
+
+    <div class="row">
+       
+        <div class="col-md-5 titulo">
+            <form action="credenciales" method="Post">
+
+                <div class="col-md-7 email_usuario">
+
+                    <div>
+                        <label for="email_usuario"  style=" font-size: 25px">Email:</label>
+                        <input id="email_usuario" type="text" placeholder="Email" name="email_usuario">
+                    </div>
+                </div>
+
+
+                <div class="col-md-4 password">
+
+                    <div>
+                        <label for="password" style=" font-size: 25px">Contraseña:</label>
+                        <input id="password" type="password" placeholder="Contraseña" name="password">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <p style="font-size: 40px">   </p>
+                </div>
+                <div class="row">
+                    <p style="font-size: 40px">   </p>
+                </div>
+                <div class="row">
+                    <p style="font-size: 40px">   </p>
+                </div>
+
+                <div class="row">
+
+                    <button class="btn btn-outline-info " align="center"> Ingresar </button>
+                </div>
+
+
+            </form>
+            <div class="row" style="font-size: 40px">
+
+                <a href="/usuario/crear-usuario"><button class="btn btn-outline-info ">Registrarse</button></a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="/js/jquery.js"></script>
+<script src="/js/popper.js"></script>
+<script src="/bootstrap/js/bootstrap.js"></script>
+</body>
+
+</html>
