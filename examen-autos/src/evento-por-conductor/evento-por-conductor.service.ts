@@ -36,5 +36,10 @@ export class EventoPorConductorService{
 
     }
 
+    crearUnEventoIntermedio(idEvento, idConductor){
+        let eventoConductor: EventoPorConductor = {idEvento: idEvento, idConductor: idConductor};
+        const eventoEntity: EventoPorConductorEntity = this._eventoPorConductorRepository.create(eventoConductor);
+    }
+
 
 }

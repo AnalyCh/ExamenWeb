@@ -36,14 +36,14 @@
                     <td><%= conductor.licenciaValida %></td>
                     <td>
 
-                        <form action="/evento-por-conductor/<%= conductor.idConductor %>" method="POST">
+                        <form action="/evento-por-conductor/lista-conductores/<%=idEvento%>/<%= conductor.idConductor %>" method="POST">
                             <label></label>
                             <button class="btn btn-outline-success btn-block"
                                     type="submit">
                                 Añadir
                             </button>
                         </form>
-                        <form action="/evento-por-conductor<% existeidEvento %>/:<%= conductor.idConductor %>" method="POST">
+                        <form action="/evento-por-conductor/lista-conductores/<%=idEvento %>/:<%= conductor.idConductor %>" method="POST">
                             <button class="btn btn-outline-danger btn-block"
                                     type="submit">
                                 Eliminar

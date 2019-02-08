@@ -191,6 +191,7 @@ export class EventoPorConductorController{
                 conductores: conductoresEventoActual,
                 mensaje: mensaje,
                 path: path,
+                idEvento: idEvento,
                 clase: clase,
 
 
@@ -205,14 +206,13 @@ export class EventoPorConductorController{
         @Param('idEvento') idEvento: string,
         @Param('idConductor') idConductor: string
     ) {
-        const eventoConductor: EventoPorConductor = null;
+        const eventoConductor: EventoPorConductor = {idEvento: +idEvento, idConductor: +idConductor};
+        console.log(eventoConductor.idConductor+ " ")
 
-        eventoConductor.idEvento = +idEvento;
-        eventoConductor.idConductor = +idConductor;
 
         const validar = new CreateEventoPorConductorDto();
 
-        eventoConductor.idEvento = eventoConductor.idConductor;
+        validar.idConductor = eventoConductor.idConductor;
         validar.idEvento = eventoConductor.idEvento;
 
         const errores: ValidationError[] = await validate(validar);
