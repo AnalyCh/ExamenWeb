@@ -206,8 +206,10 @@ export class EventoPorConductorController{
         @Param('idEvento') idEvento: string,
         @Param('idConductor') idConductor: string
     ) {
-        const eventoConductor: EventoPorConductor = {idEvento: +idEvento, idConductor: +idConductor};
-        console.log(eventoConductor.idConductor+ " ")
+        console.log(idEvento+ " -" + idConductor)
+
+        const eventoConductor: EventoPorConductor = {"idEvento" : Number(idEvento), "idConductor" : Number(idConductor)};
+        console.log(eventoConductor+ " ")
 
 
         const validar = new CreateEventoPorConductorDto();
@@ -222,7 +224,7 @@ export class EventoPorConductorController{
         console.log(errores);
         errores.forEach(
             (error) => {
-                listaError.push(error.constraints);
+                listaError.push(error.constraints["isNumber"]);
                 console.log(error)
             }
         );
