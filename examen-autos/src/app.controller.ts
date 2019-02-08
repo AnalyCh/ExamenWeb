@@ -25,7 +25,6 @@ export class AppController {
                 'login', {
                     mensaje: mensaje,
                 }
-
             )
         }
         else {

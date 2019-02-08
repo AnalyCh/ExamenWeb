@@ -21,7 +21,7 @@ import { UsuarioService } from "./usuario.service";
             UsuarioService
         ],
         exports: [
-          
+          UsuarioService
         ]
     }
 )

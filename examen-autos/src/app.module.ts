@@ -14,6 +14,15 @@ import {RolEntity} from "./rol/rol.entity";
 
 import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conductor.module";
 import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
+import {RolPorUsuarioService} from "./rolPorUsuario/rolPorUsuario.service";
+import {RolService} from "./rol/rol.service";
+import {UsuarioService} from "./usuario/usuario.service";
+import {RolPorUsuarioController} from "./rolPorUsuario/rolPorUsuario.controller";
+import {RolController} from "./rol/rol.controller";
+import {UsuarioController} from "./usuario/usuario.controller";
+import {RolPorUsuarioModule} from "./rolPorUsuario/rolPorUsuario.module";
+import {RolModule} from "./rol/rol.module";
+import {UsuarioModule} from "./usuario/usuario.module";
 
 @Module({
     imports: [
@@ -25,7 +34,7 @@ import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
             username: 'root',
             password: 'root',
             synchronize: true,
-            dropSchema: false,
+            dropSchema: true,
             entities:[
                 ConductorEntity,
                 AutoEntity,
@@ -41,10 +50,19 @@ import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
         ConductorModule,
         EventoModule,
         EventoPorConductorModule,
+        RolPorUsuarioModule,
+        RolModule,
+        UsuarioModule
 
 
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [
+        AppController,
+
+    ],
+    providers: [
+        AppService,
+
+                ],
 })
 export class AppModule {}

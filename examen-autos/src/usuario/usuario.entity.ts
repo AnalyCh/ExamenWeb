@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
 import {RolEntity} from '../rol/rol.entity';
 import {RolPorUsuarioEntity} from '../rolPorUsuario/rolPorUsuario.entity';
+import {AutoEntity} from "../auto/auto.entity";
 
 @Entity('usuario')
 
@@ -53,5 +54,11 @@ export class UsuarioEntity {
         rolPorUsuario => rolPorUsuario.usuario, {eager: true},
     )
     rolesPorUsuario: RolPorUsuarioEntity[];
+
+    @OneToMany(
+        type => AutoEntity,
+        auto => auto.idUsuario
+    )
+    autos: AutoEntity[]
 
 }
