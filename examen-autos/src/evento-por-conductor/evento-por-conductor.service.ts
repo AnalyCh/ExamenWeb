@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, FindManyOptions } from "typeorm";
+import {Repository, FindManyOptions, FindOneOptions} from "typeorm";
 import { EventoPorConductorEntity } from "./evento-por-conductor.entity";
 import {EventoPorConductor} from "./evento-por-conductor.controller";
+import {AutoEntity} from "../auto/auto.entity";
 
 
 @Injectable()
@@ -23,6 +24,16 @@ export class EventoPorConductorService{
 
     buscarPorID(idEvento: number): Promise<EventoPorConductorEntity>{
         return this._eventoPorConductorRepository.findOne(idEvento)
+    }
+
+    buscarSiExiste(idEvento: number, idConductor:number): Promise<EventoPorConductorEntity[]>{
+        return this._eventoPorConductorRepository.find({where:{idEvento: idEvento, idConductor: idConductor}})
+    }
+
+    eliminar(idEvento: number): Promise<EventoPorConductorEntity>{
+        const registroAEliminar = this._eventoPorConductorRepository.create({idEventoPorConductor: idEvento});
+        return this._eventoPorConductorRepository.remove(registroAEliminar);
+
     }
 
 

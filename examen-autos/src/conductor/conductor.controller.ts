@@ -117,10 +117,10 @@ export class ConductorController{
         const  hayErrores = errores.length >0;
         console.log("numeroerrores: "+errores.length);
         const listaError = [];
-        console.log(errores)
+        console.log(errores);
         errores.forEach(
             (error) => {
-                listaError.push(error.property)
+                listaError.push(error.property);
                 console.log(error.property)
             }
         );
@@ -222,6 +222,9 @@ export class ConductorController{
         response.redirect('/conductor/inicio'+ parametrosConsulta)
         
     }
+
+
+
 
 }
 

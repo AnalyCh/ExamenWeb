@@ -242,6 +242,14 @@ export class AutoController {
         response.redirect('/auto/inicio'+ parametrosConsulta)
         
     }
+    @Get('inicio-usuario')
+    inicioGeneral(
+        @Res() res
+    ){
+        res.render(
+            'inicio-usuario'
+        )
+    }
 
 
 

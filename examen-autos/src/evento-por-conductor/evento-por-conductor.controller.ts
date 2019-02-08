@@ -1,12 +1,13 @@
 import {Controller, Get, Query, Res, Param, Post, Body} from "@nestjs/common";
 import { EventoPorConductorService } from "./evento-por-conductor.service";
 import {EventoService} from "../evento/evento.service";
-import {FindManyOptions, Like} from "typeorm";
+import {FindManyOptions, FindOneOptions, Like} from "typeorm";
 import {EventoPorConductorEntity} from "./evento-por-conductor.entity";
 import {ConductorService} from "../conductor/conductor.service";
 import {EventoEntity} from "../evento/evento.entity";
 import {CreateEventoPorConductorDto} from "./dto/create-evento-por-conductor.dto";
 import {validate, ValidationError} from "class-validator";
+import {ConductorEntity} from "../conductor/conductor.entity";
 
 
 @Controller('evento-por-conductor')
@@ -84,8 +85,8 @@ export class EventoPorConductorController{
                 (conductor)=>{
                     idConductores.push(conductor.idConductor)
                 }
-            )
-            const conductores = await this._conductor.buscarPorIDS(idConductores)
+            );
+            const conductores = await this._conductor.buscarPorIDS(idConductores);
             
             response.render(
                 'listar-eventos-publico',
@@ -126,7 +127,7 @@ export class EventoPorConductorController{
         const  hayErrores = errores.length >0;
         console.log("numeroerrores: "+errores.length);
         const listaError = [];
-        console.log(errores)
+        console.log(errores);
         errores.forEach(
             (error) => {
                 listaError.push(error.constraints)
@@ -148,46 +149,112 @@ export class EventoPorConductorController{
 
     }
 
+    @Get('lista-conductores/:idEvento')
+    async addConductor(
+        @Res() response,
+        @Param('idEvento') idEvento: string,
+        @Query('error') error
+    ){
+        let mensaje = undefined;
+        let clase = undefined;
+        if(error ){
+            mensaje = `Error en el compos ${error}`;
+            clase = 'alert alert-danger';
+        }
+        console.log(idEvento);
+        const path =`/lista-conductores/:${idEvento}`;
+        let conductoresEventoActual: ConductorEntity[];
 
-    @Post('add-conductor/:idConductor')
+        if(idEvento) {
+            const consulta: FindManyOptions<EventoPorConductorEntity> = {
+                where: [
+                    {
+                        idEvento: Like(`${+idEvento}`)
+                    }
+                ]
+            };
+            const eventosConductores = await this._eventoPorConductor.buscar(consulta);
+            let idConductores = [];
+
+            eventosConductores.forEach(
+                (conductor)=>{
+                    idConductores.push(conductor.idConductor)
+                }
+            );
+            conductoresEventoActual = await this._conductor.buscarPorIDS(idConductores);
+        }
+        let conductores= await this._conductor.buscar();
+
+        response.render(
+            'add-conductores-a-evento',{
+                arreglo: conductores,
+                conductores: conductoresEventoActual,
+                mensaje: mensaje,
+                path: path,
+                clase: clase,
+
+
+            }
+        )
+    }
+
+
+    @Post('lista-conductores/:idEvento/:iConductor')
     async aniadirConductor(
         @Res() response,
-        @Body() nombreEvento: string,
+        @Param('idEvento') idEvento: string,
         @Param('idConductor') idConductor: string
-    ){
-        const eventoConductor: EventoPorConductor= null;
+    ) {
+        const eventoConductor: EventoPorConductor = null;
+
+        eventoConductor.idEvento = +idEvento;
+        eventoConductor.idConductor = +idConductor;
+
         const validar = new CreateEventoPorConductorDto();
-        const idEvento = await this._eventoService.buscarPorNombre(nombreEvento)
-        console.log(typeof (idConductor)+" "+ typeof (idEvento))
 
-        eventoConductor.idConductor = + idConductor
-        validar.idConductor = +idConductor;
-
-        eventoConductor.idEvento = Number(idEvento);
-        validar.idEvento = +idEvento
+        eventoConductor.idEvento = eventoConductor.idConductor;
+        validar.idEvento = eventoConductor.idEvento;
 
         const errores: ValidationError[] = await validate(validar);
-        const  hayErrores = errores.length >0;
-        console.log("numeroerrores: "+errores.length);
+        const hayErrores = errores.length > 0;
+        console.log("numeroerrores: " + errores.length);
         const listaError = [];
-        console.log(errores)
+        console.log(errores);
         errores.forEach(
             (error) => {
-                listaError.push(error.constraints)
+                listaError.push(error.constraints);
                 console.log(error)
             }
         );
 
-        if(hayErrores){
+
+        if (hayErrores) {
             const parametrosConsulta = `?error=${
                 listaError.toString()
                 }`;
 
-            response.redirect('/conductor/crear-conductor/'+parametrosConsulta)
-        }else{
-            await this._eventoPorConductor.crear(eventoConductor)
+            response.redirect('/evento-por-conductor/lista-conductores/' + parametrosConsulta)
+        } else {
+            const conductorEventoACrear =
+                await this._eventoPorConductor.buscarSiExiste(eventoConductor.idEvento, eventoConductor.idConductor);
+
+
+            if(conductorEventoACrear){
+                await this._eventoPorConductor.eliminar(eventoConductor.idEventoPorConductor)
+                const parametrosConsulta = `?accion=eliminar`;
+
+                response.redirect('lista-conductores/:idEvento'+parametrosConsulta);
+            }else {
+                await this._eventoPorConductor.crear(eventoConductor);
+                const parametrosConsulta = `?accion=crear`;
+
+                response.redirect('lista-conductores/:idEvento'+parametrosConsulta);
+            }
+
+
 
         }
+
 
     }
 

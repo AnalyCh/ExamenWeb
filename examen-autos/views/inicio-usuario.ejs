@@ -1,0 +1,45 @@
+
+<%- include('header',{titulo:'Gestion General'}); %>
+
+<div class="container ">
+
+    <!--Etiqueta stile lee CSS -->
+    <% const existeMensaje = typeof mensaje!== "undefined"%>
+
+    <%if(existeMensaje){ %>
+    <div class=" <%=clase%>" role="alert">
+        <span class="font-weight-bold">
+            MENSAJE
+        </span> : <%=mensaje%>
+    </div>
+    <% } %>
+
+    <br>
+    <h2> lista de Autos</h2>
+    <p>Listado de las autos, actualice o elimine autos</p>
+    <a href="/auto/inicio">
+        <button class="btn btn-outline-success">Autos</button>
+    </a>
+    <br>
+
+    <h2> lista de Conductores</h2>
+    <p>Listado de las conductores, actualice o elimine conductores</p>
+    <a href="/conductor/inicio">
+        <button class="btn btn-outline-success">Conductores</button>
+    </a>
+    <br>
+
+    <h2> lista de Eventos</h2>
+    <p>Listado de las eventos, actualice o elimine eventos</p>
+    <a href="/evento/inicio">
+        <button class="btn btn-outline-success">Eventos</button>
+    </a>
+    <br>
+
+
+</div>
+
+<%- include('librerias.ejs');%>
+
+
+<%- include('footer');%>

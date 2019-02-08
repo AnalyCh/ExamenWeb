@@ -124,7 +124,7 @@ export class EventoController{
         console.log(errores)
         errores.forEach(
             (error) => {
-                listaError.push(error.property)
+                listaError.push(error.property);
                 console.log(error.property)
             }
         );
@@ -144,7 +144,7 @@ export class EventoController{
                 evento.nombre
             }`;
             
-            //response.redirect('/evento/inicio'+parametrosConsulta)
+            response.redirect('/evento/inicio'+parametrosConsulta)
         }
         
 

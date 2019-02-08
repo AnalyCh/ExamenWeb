@@ -19,7 +19,7 @@ import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conduc
         TypeOrmModule.forRoot({
             type: "mysql",
             host: "localhost",
-            port: 32771,
+            port: 32769,
             database: 'vehiculos',
             username: 'root',
             password: 'root',

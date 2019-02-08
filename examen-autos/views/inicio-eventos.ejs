@@ -14,6 +14,13 @@
     </div>
     <% } %>
 
+    <a href="/auto/inicio-usuario" class="quitar-link">
+        <button class="btn btn-outline-success btn-block">
+            Regresar al menu principal
+        </button>
+    </a>
+    <br>
+
     <h1>Gestion de Eventos</h1>
     <p>Busque, cree, actualice y elimine Eventos
         Puede buscar Eventos por  el nombre, la fecha o ...</p>
@@ -77,18 +84,26 @@
                     <td><%= evento.longitud %></td>
                     
                     <td>
-                        <form action="/evento/eliminar/<%= evento.idevento %>" method="POST">
-                            <button class="btn btn-outline-danger btn-block"
-                                    type="submit">
-                                Eliminar
-                            </button>
-                        </form>
                         <a class="quitar-link"
                            href="/evento/actualizar-evento/<%= evento.idEvento %>">
                             <button class="btn btn-outline-info btn-block">
                                 Actualizar
                             </button>
                         </a>
+
+                        <a class="quitar-link"
+                           href="/evento-por-conductor/lista-conductores/<%= evento.idEvento %>">
+                            <button class="btn btn-outline-info btn-block">
+                                Añadir asistentes
+                            </button>
+                        </a>
+                        <form action="/evento/eliminar/<%= evento.idevento %>" method="POST">
+                            <button class="btn btn-outline-danger btn-block"
+                                    type="submit">
+                                Eliminar
+                            </button>
+                        </form>
+
                     </td>
                 </tr>
             <% }) %>
