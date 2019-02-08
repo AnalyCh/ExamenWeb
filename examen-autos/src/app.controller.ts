@@ -44,18 +44,21 @@ export class AppController {
     ) {
         let mensaje;
 
-        console.log(username_email, password);
+        console.log("datos:"+username_email, password);
         const usuario = new CredencialesDto;
         usuario.email_usuario = username_email;
         usuario.password_usuario = password;
+        console.log("datos2:"+usuario.email_usuario, usuario.password_usuario);
         const arregloErrores = await validate(usuario);
         const existeErrores = arregloErrores.length > 0;
+
         if (existeErrores) {
 
             response.render('login', {mensaje: 'Datos incorrectos'})
 
 
         } else {
+
             const respuestaAutenticacion = await this._usuarioService.credenciales(usuario);
 
             if (respuestaAutenticacion){
@@ -83,13 +86,17 @@ export class AppController {
 
 //                    response.render('login', {mensaje: 'Datos incorrectos'})
                   // throw new BadRequestException({mensaje: 'No tiene permisos aunfddf'}); response.render('crear-usuario', {mensaje: 'Datos incorrectos'});
+                    //throw new BadRequestException({mensaje: 'No tiene permisos aun'});
+                    const parametrosConsulta = `?mensaje=$Sin permisos`;
+
+                    response.redirect('/login'+parametrosConsulta)
 
                 }
             }  else{
              //   response.render('login', {mensaje: 'Datos incorrectos'})
               // response.render('login')
               //  response.redirect('login?errores=Hay errores');
-              throw new BadRequestException({mensaje: 'No a tiene permisos aun'});
+              throw new BadRequestException({mensaje: 'No tiene permisos aun'});
 
             }
 

@@ -106,7 +106,10 @@ export class UsuarioController {
 
                 })
         } else {
-            throw new BadRequestException({mensaje: "No hay permisos aun"});
+            //throw new BadRequestException({mensaje: "No hay permisos aun"});
+            res.redirect(
+                'auto/inicio'
+            )
         }
     }
 

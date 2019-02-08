@@ -14,12 +14,6 @@ import {RolEntity} from "./rol/rol.entity";
 
 import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conductor.module";
 import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
-import {RolPorUsuarioService} from "./rolPorUsuario/rolPorUsuario.service";
-import {RolService} from "./rol/rol.service";
-import {UsuarioService} from "./usuario/usuario.service";
-import {RolPorUsuarioController} from "./rolPorUsuario/rolPorUsuario.controller";
-import {RolController} from "./rol/rol.controller";
-import {UsuarioController} from "./usuario/usuario.controller";
 import {RolPorUsuarioModule} from "./rolPorUsuario/rolPorUsuario.module";
 import {RolModule} from "./rol/rol.module";
 import {UsuarioModule} from "./usuario/usuario.module";
@@ -34,7 +28,7 @@ import {UsuarioModule} from "./usuario/usuario.module";
             username: 'root',
             password: 'root',
             synchronize: true,
-            dropSchema: true,
+            dropSchema: false,
             entities:[
                 ConductorEntity,
                 AutoEntity,
