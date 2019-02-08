@@ -1,0 +1,87 @@
+<!Doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>USUARIO</title>
+
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/estilos-generales.css">
+
+</head>
+
+<body>
+<div class="container">
+    <% const existeMensaje = typeof mensaje !== "undefined"? true : false;%>
+
+    <% if (existeMensaje){%>
+    <div class="alert alert-primary" role="alert">
+        <span class="font-weight-bold">
+        MENSAJE:
+        </span> <%=mensaje%>
+
+    </div>
+    <%}%>
+<div class="row">
+    <div class="col-md-3 titulo"></div>
+    <div class="col-md-5 titulo">
+        <h1 align="center">REGISTRO</h1>
+    </div>
+    <div class="col-md-4 titulo"></div>
+</div>
+<br>
+    <div class="row">
+        <div class="col-md-4 titulo">
+            <h2>DATOS PERSONALES</h2>
+        </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-3 titulo">
+        <form action="crear-usuario" method="Post">
+
+            <div >
+                <label for="nombre">Nombre completo</label>
+                <input id="nombre" type="text" name="nombre">
+            </div>
+
+            <div>
+                <label for="email">Correo electronico</label>
+                <input id="email" type="text" name="email">
+            </div>
+            <div>
+                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                <input id="fecha_nacimiento" type="date" min="1900-01-01" max="2019-01-01" name="fecha_nacimiento">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password">
+            </div>
+
+            <div class="col-md-2 text-center">
+                <button class="btn btn-outline-info estaciado-boton " align="center">Registrar</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 titulo"></div>
+    <div class="col-md-4 titulo"></div>
+    <a href="/login">
+        <button class="btn btn-outline-info " align="center">Regresar</button>
+    </a>
+
+</div>
+<script src="/js/jquery.js"></script>
+<script src="/js/popper.js"></script>
+<script src="/bootstrap/js/bootstrap.js"></script>
+</div>
+</body>
+</html>
+
+
+

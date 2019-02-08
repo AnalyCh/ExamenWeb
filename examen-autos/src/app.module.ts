@@ -11,8 +11,9 @@ import { EventoModule } from './evento/evento.module';
 import { EventoPorConductorEntity } from './evento-por-conductor/evento-por-conductor.entity';
 import {UsuarioEntity} from "./usuario/usuario.entity";
 import {RolEntity} from "./rol/rol.entity";
-import {RolesporusuarioEntity} from "./rolesporusuario/rolesporusuario.entity";
+
 import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conductor.module";
+import {RolPorUsuarioEntity} from "./rolPorUsuario/rolPorUsuario.entity";
 
 @Module({
     imports: [
@@ -32,7 +33,7 @@ import {EventoPorConductorModule} from "./evento-por-conductor/evento-por-conduc
                 EventoPorConductorEntity,
                 UsuarioEntity,
                 RolEntity,
-                RolesporusuarioEntity
+                RolPorUsuarioEntity
 
             ]
         }),

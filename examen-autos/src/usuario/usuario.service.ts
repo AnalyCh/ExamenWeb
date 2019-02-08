@@ -1,73 +1,47 @@
-
-import { UsuarioEntity } from "./usuario.entity";
-
-import { FindManyOptions, Repository, FindOneOptions } from "typeorm";
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from "@nestjs/common";
-import { UsuarioDto } from "./usuario.dto";
+import { UsuarioEntity } from './usuario.entity';
+import {FindManyOptions, Repository} from 'typeorm';
+import {UsuarioDto} from './usuario-create-dto/usuario-create.dto';
 
 @Injectable()
 export class UsuarioService {
-
     constructor(
-        @InjectRepository(UsuarioEntity)
-        private readonly _usuarioRepository: Repository<UsuarioEntity>,
-    ) {
-    }
-
-    buscar(parametrosBusqueda?: FindManyOptions<UsuarioEntity>)
-        : Promise<UsuarioEntity[]> {
-        return this._usuarioRepository.find(parametrosBusqueda);
-    }
-
-    crear(usurio: UsuarioDto): Promise<UsuarioEntity> {
-
-        // Metodo Create es como un CONSTRUCTOR de la ENTIDAD
-        const usuarioEntity: UsuarioEntity = this._usuarioRepository
-            .create(usurio);
-
-        // Metodo Save Guarda en la BDD
-        return this._usuarioRepository.save(usuarioEntity);
+        @InjectRepository (UsuarioEntity)
+        private readonly _usuarioService: Repository<UsuarioEntity>){
 
     }
 
-    eliminar(usuario_iddelete: number): Promise<UsuarioEntity> {
-
-        const usuarioEliminar: UsuarioEntity = this._usuarioRepository
-            .create({
-                usuario_id: usuario_iddelete
-            });
-
-        return this._usuarioRepository.remove(usuarioEliminar);
-    }
-
-    actualizar(usuarioNuevo: UsuarioEntity): Promise<UsuarioEntity> {
-
-        const usuarioEntity: UsuarioEntity = this._usuarioRepository
-            .create(usuarioNuevo);
-
-        return this._usuarioRepository.save(usuarioEntity);
-
-    }
-
-    buscarPorId(usurioid: number): Promise<UsuarioEntity> {
-        return this._usuarioRepository.findOne(usurioid);
-    }
-
-    async autenticar(correo: string, password: string): Promise<UsuarioEntity> {
-        // Password encriptada
-        // Encriptar el passwrod que les llega
-
-        const consulta: FindOneOptions<UsuarioEntity> = {
+    async credenciales(usuario: UsuarioDto): Promise<UsuarioEntity>{
+        const consulta = {
             where: {
-                correo: correo,
-                password: password // password encriptado
-            }
+                email_usuario: usuario.email_usuario,
+                password_usuario: usuario.password_usuario,
+            },
+
         };
-
-        const respuesta = await this._usuarioRepository.findOne(consulta);
-
-      return respuesta;
-
+        return await this._usuarioService.findOne(consulta);
     }
+
+    async crearUsuario(nuevoUsuario: UsuarioDto): Promise<UsuarioEntity> {
+        const usuarioEntity = this._usuarioService.create(nuevoUsuario);
+        const usuarioCreado = await this._usuarioService.save(usuarioEntity);
+        return usuarioCreado;
+    }
+
+    buscar(parametros?: FindManyOptions<UsuarioEntity>): Promise<UsuarioEntity[]> {
+        return this._usuarioService.find(parametros);
+    }
+
+    borrar(id: number): Promise<UsuarioEntity> {
+        const usuarioEntityEliminar = this._usuarioService.create({
+            id,
+        });
+        return this._usuarioService.remove(usuarioEntityEliminar);
+    }
+
+    buscarPorId(id: number): Promise<UsuarioEntity> {
+        return this._usuarioService.findOne(id);
+    }
+
 }

@@ -1,102 +1,130 @@
-import { Body, Controller, Get, Param, Post, Query, Res, BadRequestException } from "@nestjs/common";
-import { FindManyOptions, Like } from "typeorm";
-import { UsuarioEntity } from "./usuario.entity";
-import { UsuarioService } from "./usuario.service";
-import { validate } from "class-validator";
-import { UsuarioDto } from "./usuario.dto";
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    Res,
+    ForbiddenException,
+    Param,
+    BadRequestException,
+    Session, Query,
+} from '@nestjs/common';
+import {FindManyOptions, Repository} from 'typeorm';
+import { UsuarioEntity } from './usuario.entity';
+import {UsuarioService} from './usuario.service';
+import {Like} from 'typeorm';
+import {validate, ValidationError} from 'class-validator';
+import {UsuarioDto} from './usuario-create-dto/usuario-create.dto';
 
 @Controller('usuario')
+
 export class UsuarioController {
 
     constructor(
-        private userservice: UsuarioService
+        private readonly _usuarioService: UsuarioService,
     ) {
+    }
+
+    @Get('crear-usuario')
+    crearUsuario(
+        @Res() response,
+        @Query('mensaje') mensaje: string,
+    ) {
+
+        if (mensaje) {
+            response.render(
+                'crear-usuario', {
+                    mensaje: mensaje,
+                }
+            )
+        }
+        else {
+            response.render(
+                'crear-usuario'
+            )
+        }
+    }
+
+    @Post('crear-usuario')
+    async crearUsuarioPost(
+        @Res() response,
+        @Body() usuarioCrear,
+    ) {
+        const usuario = new UsuarioDto;
+        usuario.nombre_usuario = usuarioCrear.nombre;
+        usuario.email_usuario = usuarioCrear.email;
+        usuario.password_usuario = usuarioCrear.password;
+        usuario.fecha_nacimiento_usuario = usuarioCrear.fecha_nacimiento;
+        const arregloErrores = await validate(usuario);
+        const existeErrores = arregloErrores.length > 0;
+        if (existeErrores) {
+            console.error('Errores: Usuario a crear - ', arregloErrores);
+            response.render('crear-usuario', {mensaje: 'Datos incorrectos'});
+        } else {
+            await this._usuarioService.crearUsuario(usuario);
+            response.redirect('/login');
+        }
 
     }
 
-    @Post('ingresarusuario')
-    async registrarusuarioController(
-        @Body() usuario: UsuarioEntity,
+    @Get('inicio')
+    async mostrarUsuario(
+        @Res() res,
+        @Session() sesion,
+        @Query('accion') accion: string,
+        @Query('nombre') nombre: string,
+        @Query('busqueda') busqueda: string
+    ) {
+        if (sesion.rol === 'administrador') {
+            let mensaje = undefined;
+
+            let usuarios: UsuarioEntity[];
+
+            if (busqueda) {
+
+                const consulta: FindManyOptions<UsuarioEntity> = {
+                    where: [
+                        {
+                            nombre_usuario: Like(`%${busqueda}%`)
+                        },
+                        {
+                            email_usuario: Like(`%${busqueda}%`)
+                        },
+                    ]
+                };
+
+                usuarios = await this._usuarioService.buscar(consulta);
+            } else {
+
+                usuarios = await this._usuarioService.buscar();
+            }
+
+            res.render('lista-usuarios',
+                {
+                    arregloUsuario: usuarios,
+                    mensaje: mensaje,
+
+                })
+        } else {
+            throw new BadRequestException({mensaje: "No hay permisos aun"});
+        }
+    }
+
+    @Post('borrar/:idUsuario')
+    async borrar(
+        @Param('idUsuario') idUsuario: string,
         @Res() response,
     ) {
-        console.log('valor nombre', usuario.nombre)
-        console.log('valor nombre', usuario.fecha_nacimiento)
-        const usuarionuevo = new UsuarioDto();
-        usuarionuevo.usuario_id = usuario.usuario_id;
-        usuarionuevo.password = usuario.password;
-        usuarionuevo.nombre = usuario.nombre;
-        usuarionuevo.fecha_nacimiento = new Date(usuario.fecha_nacimiento);
-        usuarionuevo.correo = usuario.correo;
-        const arregloErrores = await validate(usuarionuevo)
-        const existenErrores = arregloErrores.length > 0
-        console.log(arregloErrores)
-        if (existenErrores) {
-            console.error('errores: creando al usuario', arregloErrores[0].constraints)
-            response.render(
-                'register',
-                {
-                    mensaje: arregloErrores
 
-                });
 
-            throw new BadRequestException('Parametros incorrectos')
-        }
-        else {
-            this.userservice.crear(usuarionuevo);
-            console.log('variable fecha naciemineto', usuario.fecha_nacimiento)
-            response.render(
-                'register',
-                {
-                    mensajeok: usuarionuevo
+        const usuarioEncontrado = await this._usuarioService
+            .buscarPorId(+idUsuario);
 
-                });
-            return usuarionuevo;
-        }
+        await this._usuarioService.borrar(Number(idUsuario));
+
+        const parametrosConsulta = `?accion=borrar&nombre=${usuarioEncontrado.nombre_usuario}`;
+        response.redirect('/usuario/inicio' + parametrosConsulta);
+
 
     }
-    @Post('login')
-    async autentificarController(
-        @Body('correo') correo:string,
-        @Body('password') password:string,
-        @Res() response
-    ): Promise<UsuarioEntity> {
-        console.log('valor de correo', correo)
-        console.log('valor de pasword', password)
-        const usuarioEncontrado = await this.userservice.autenticar(correo,password);
-      
-        if (usuarioEncontrado) {
-            const esPasswordCorrecto = usuarioEncontrado.password == password
-            if (esPasswordCorrecto) {
-                response.render(
-                    'login',
-                    {
-                        mensajeok: usuarioEncontrado
-    
-                    });
-                return usuarioEncontrado;
-            }
-            else {
-                console.error('intento fallido:  paassword incorrecto', password)
-               
-                throw new BadRequestException('error loguin')
-            }
-        }
-        else {
-            console.error('intento fallido:  no existe usuario', correo)
-            response.render(
-                'login',
-                {
-                    mensajeerror: 'intento fallido:  no existe usuario', correo
-
-                });
-
-            throw new BadRequestException('error loguin')
-        }
-       
-
-    }
-
 }
-
-
-

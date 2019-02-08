@@ -1,38 +1,57 @@
-import {Column, Entity, PrimaryGeneratedColumn, OneToMany} from "typeorm";
-import { RolesporusuarioEntity } from "src/rolesporusuario/rolesporusuario.entity";
-import {AutoEntity} from "../auto/auto.entity";
-
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
+import {RolEntity} from '../rol/rol.entity';
+import {RolPorUsuarioEntity} from '../rolPorUsuario/rolPorUsuario.entity';
 
 @Entity('usuario')
+
 export class UsuarioEntity {
 
-   
-   
     @PrimaryGeneratedColumn()
-    usuario_id: number;
+    id: number;
 
-    @Column()
-    nombre: string;
+    @Column(
+        {
+            name: 'nombre_usuario',
+            type: 'varchar',
+            length: 30,
+            default: 'nombre',
+        },
+    )
+    nombre_usuario: string;
 
-    @Column()
-    correo: string;
+    @Column(
+        {
+            name: 'email_usuario',
+            type: 'varchar',
+            length: 30,
+            default: 'email',
+        },
+    )
+    email_usuario: string;
 
-    @Column()
-    password: string;
+    @Column(
+        {
+            name: 'password_usuario',
+            type: 'varchar',
+            length: 30,
+            default: '1234',
+        },
+    )
+    password_usuario: string;
 
-    @Column()
-    fecha_nacimiento: Date;
+    @Column(
+        {
+            name: 'fecha_nacimiento_usuario',
+            type: 'varchar',
+            default: '1/1/1995',
+        },
+    )
+    fecha_nacimiento_usuario: string;
 
     @OneToMany(
-        type => RolesporusuarioEntity,  
-        pagina => pagina.rol
+        type => RolPorUsuarioEntity,
+        rolPorUsuario => rolPorUsuario.usuario, {eager: true},
     )
-    paginas: RolesporusuarioEntity[];
-
-    @OneToMany(
-        type => AutoEntity,
-        auto => auto.idUsuario
-    )
-    autos: AutoEntity[];
+    rolesPorUsuario: RolPorUsuarioEntity[];
 
 }
