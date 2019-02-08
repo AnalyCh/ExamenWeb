@@ -219,6 +219,8 @@ export class AutoController {
 
             auto.anio = Number(auto.anio);
             objetoValidacionAuto.anio = auto.anio;
+            auto.idUsuario = + session.idUsuario;
+            objetoValidacionAuto.idUsuario = auto.idUsuario;
 
             const errores: ValidationError[] = await validate(objetoValidacionAuto);
             const  hayErrores = errores.length >0;
