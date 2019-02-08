@@ -1,6 +1,4 @@
 import {Body, Controller, Get, Post, Res} from "@nestjs/common";
-import { Repository } from "typeorm";
-import { RolEntity } from "./rol.entity";
 import {RolDto} from "./rol-create-dto/rol-create.dto";
 import {RolService} from "./rol.service";
 
